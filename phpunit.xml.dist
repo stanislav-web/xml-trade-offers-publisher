@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Setup test files and directories -->
+<phpunit    backupGlobals="false"
+            backupStaticAttributes="false"
+            bootstrap="./phpunit/bootstrap.php"
+            cacheTokens="false"
+            colors="true"
+            convertErrorsToExceptions="true"
+            convertNoticesToExceptions="true"
+            convertWarningsToExceptions="true"
+            processIsolation="false"
+            stopOnError="false"
+            stopOnFailure="false"
+            stopOnIncomplete="false"
+            stopOnSkipped="false"
+            mapTestClassNameToCoveredClassName="false"
+            verbose="true"
+            debug="false"
+            syntaxCheck="false">
+
+    <!-- Setup testsuites -->
+    <testsuites>
+        <testsuite name="Basic">
+            <directory>./phpunit</directory>
+        </testsuite>
+    </testsuites>
+    <!-- /Setup testsuites -->
+
+    <filter>
+        <blacklist>
+            <directory suffix=".php">./cache</directory>
+            <directory suffix=".php">./logs</directory>
+            <directory suffix=".php">./vendor</directory>
+            <directory suffix=".php">./phpunit/src/Mockups</directory>
+        </blacklist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <exclude>
+                <file>./phpunit/bootstrap.php</file>
+                <directory suffix=".php">./Application/Aware</directory>
+                <directory suffix=".php">./Application/Modules</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="./phpunit/logs/coverage" charset="UTF-8"
+             yui="true" highlight="true"
+             lowUpperBound="50" highLowerBound="80" />
+        <log type="coverage-clover" target="./phpunit/logs/coverage.xml"/>
+        <log type="coverage-php" target="./phpunit/logs/coverage.php"/>
+        <log type="coverage-text" target="php://stdout" />
+    </logging>
+
+</phpunit>
+<!-- Setup test files and directories -->

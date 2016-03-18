@@ -1,0 +1,42 @@
+{
+  "name": "stanislav-web/catalogue-export",
+  "description": "Exports of goods and services into the partner shops",
+  "type": "project",
+  "keywords": [
+    "phalcon export",
+    "product export",
+    "catalogue export",
+    "phalcon rest api"
+  ],
+  "support": {
+    "issues": "https://github.com/stanislav-web/catalogue-export/issues"
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+  "homepage" : "https://github.com/stanislav-web/catalogue-export",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stanislav WEB",
+      "email": "stanisov@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Application\\": "Application/"
+    }
+  },
+  "require": {
+    "php": ">=5.5.0",
+    "dannyvankooten/php-router": "dev-master",
+    "symfony/yaml": "^3.1@dev",
+    "apache/log4php": "dev-master",
+    "guzzle/guzzle": "^3.9@dev",
+    "faisalman/simple-excel-php": "dev-master",
+    "plugmystore/amazon-mws-orders": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  }
+}

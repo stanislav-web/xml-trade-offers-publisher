@@ -72,7 +72,7 @@ $config = [
 
             // Create order API
             'orderApi'  => [
-                'token'     =>  '3j3n39h9nh', // Compass Api token
+                'token'     =>  '', // Compass Api token
                 'url'       =>  '', // CSD host
                 'siteId'    =>  1,
                 'warehouseId'=>  1,

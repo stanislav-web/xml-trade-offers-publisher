@@ -72,8 +72,8 @@ $config = [
 
             // Create order API
             'orderApi'  => [
-                'token'     =>  '3j3n39h9nh',
-                'url'       =>  'v1.csd.develop.redumbrella.ua',
+                'token'     =>  '3j3n39h9nh', // Compass Api token
+                'url'       =>  '', // CSD host
                 'siteId'    =>  1,
                 'warehouseId'=>  1,
                 'currencies' => [
@@ -82,6 +82,8 @@ $config = [
                     'GBP'   =>  4,
                     'CAD'   =>  7
                 ],
+
+                // CSD Rest path for order create
                 'path'      =>  [
                     'customer'          =>  '/customers',
                     'customerCountries' =>  '/countries',

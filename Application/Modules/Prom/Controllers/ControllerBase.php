@@ -20,11 +20,18 @@ class ControllerBase {
     private $request;
 
     /**
-     * Configuration
+     * Application config
      *
      * @var array $config
      */
     protected $config;
+
+    /**
+     * Partner config
+     *
+     * @var array $partnerConfig
+     */
+    protected $partnerConfig;
 
     /**
      * View service
@@ -45,9 +52,12 @@ class ControllerBase {
         // set request handler
         $this->request = new Request();
 
+        // Partner config
+        $this->partnerConfig = $this->config['services'][$this->request->getExportPartner()];
+
         // set view templater
         $this->view = new View(
-            $this->config['services'][$this->request->getExportPartner()],
+            $this->partnerConfig,
             $this->request->getShop(),
             $this->request->getViewType()
         );

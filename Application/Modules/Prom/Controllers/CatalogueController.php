@@ -22,13 +22,12 @@ class CatalogueController extends ControllerBase {
 
         parent::__construct();
 
-        $this->productService = new ProductService();
+        $this->productService = new ProductService($this->partnerConfig);
     }
     /**
      * Export catalogue action
      */
     public function exportAction() {
-
 
         exit('Export Prom');
         if($this->view->isCached() === false) {

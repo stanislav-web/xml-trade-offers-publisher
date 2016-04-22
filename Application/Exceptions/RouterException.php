@@ -2,25 +2,25 @@
 namespace Application\Exceptions;
 
 /**
- * Class APIException
+ * Class BadRequestException
  *
- * Represents an HTTP 400 error.
+ * Represents an HTTP 502 error.
  * The request could not be understood by the server due to malformed syntax.
  * The client SHOULD NOT repeat the request without modifications.
  *
  * @package Application\Exceptions
  */
-class APIException extends \Exception {
+class RouterException extends \Exception {
 
     /**
      * @const HTTP response message
      */
-    const MESSAGE = 'Api';
+    const MESSAGE = 'Router error';
 
     /**
      * @const HTTP response code
      */
-    const CODE = 400;
+    const CODE = 500;
 
     /**
      * Constructor

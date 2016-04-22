@@ -4,6 +4,7 @@ namespace Application\Services;
 use Application\Exceptions\NotFoundException;
 use PHPRouter\Config;
 use PHPRouter\Router as Route;
+use Application\Exceptions\RouterException;
 
 /**
  * Class Router
@@ -36,21 +37,27 @@ class Router {
     /**
      * Router runner
      *
-     * @throws NotFoundException
      * @return bool|\PHPRouter\Route
+     * @throws NotFoundException
+     * @throws RouterException
      */
     public function run() {
 
-        $routes = Config::loadFromFile($this->routePath);
-        $router = Route::parseConfig($routes);
+        try {
+            $routes = Config::loadFromFile($this->routePath);
+            $router = Route::parseConfig($routes);
 
-        $exec = $router->matchCurrentRequest();
+            $exec = $router->matchCurrentRequest();
 
-
-        if($exec) {
-            return $exec;
+            if($exec) {
+                return $exec;
+            }
+            throw new NotFoundException('Route does not found', NotFoundException::CODE);
         }
-        throw new NotFoundException('Route does not found', NotFoundException::CODE);
+        catch(\Symfony\Component\Yaml\Exception\ParseException $e) {
+            throw new RouterException($e->getMessage(), $e->getCode());
+        }
+
     }
 
 }

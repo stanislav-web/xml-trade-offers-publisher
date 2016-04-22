@@ -5,13 +5,10 @@
  * @version PRODUCTION
  */
 
-//ini_set('display_errors', 'Off');
-//error_reporting(0);
+ini_set('display_errors', 'Off');
+error_reporting(0);
 
-ini_set('display_errors', 'On');
-error_reporting(E_ALL & ~E_WARNING);
-
-$config = [
+return [
 
     // Route rest configuration
     'routes'    =>  DOCUMENT_ROOT . '../config/routes.yaml',
@@ -55,30 +52,30 @@ $config = [
     'services'  =>  [
         'prom'    =>  [
 
-            'auth'    =>  [],
+            // Database configuration
+            'db' => [
+                'hostname'  =>  'localhost',
+                'username'  =>  'dev',
+                'password'  =>  '8QSMovWTaS',
+                'database'  =>  'CompassCatalogue',
+                'driver'    =>  'mysql',
+                'charset'   =>  'utf8',
+                'debug'     =>  \PDO::ERRMODE_SILENT,
+                'connect'   =>  \PDO::ATTR_PERSISTENT,
+                'fetching'  =>  \PDO::FETCH_ASSOC,
+            ],
 
+            // Output template path
             'templates'  =>  [
                 'xml'   =>  DOCUMENT_ROOT . '../Application/Modules/Prom/Views/prom.xml.tpl'
             ],
+
+            // Output header
             'headers'    =>  [
                 'xml'   =>  'Content-Type: application/xml; charset=utf-8'
             ],
-            'cache' => [
-                'enable'    => true,
-                'directory' => DOCUMENT_ROOT . '../cache',
-                'ttl'       => 1,
-            ]
-        ],
-        'googlemerchant'    =>  [
 
-            'auth'    =>  [],
-
-            'templates'  =>  [
-                'xml'   =>  DOCUMENT_ROOT . '../Application/Modules/GoogleMerchant/Views/googlemerchant.xml.tpl'
-            ],
-            'headers'    =>  [
-                'xml'   =>  'Content-Type: application/xml; charset=utf-8'
-            ],
+            // Cache template configuration
             'cache' => [
                 'enable'    => true,
                 'directory' => DOCUMENT_ROOT . '../cache',

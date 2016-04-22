@@ -51,6 +51,23 @@ return [
     'services'  =>  [
         'prom'    =>  [
 
+            // Export params
+            'params'    =>  [
+                'productTypes'  =>  [
+                    28,     // Tea
+                    290,    // Herbal Tea
+                    309,    // Tea With Flower
+                    600     // Tea mix
+                ],
+                'productStatuses'   =>  [
+                    26 // Moderated
+                ],
+                'warehouses'        =>  [],
+                'priceGroup'        =>  1,
+                'language'          =>  1,
+                'currency'          =>  1
+            ],
+
             // Database configuration
             'db' => [
                 'hostname'  =>  'localhost',

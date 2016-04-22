@@ -29,7 +29,11 @@ class CatalogueController extends ControllerBase {
      */
     public function exportAction() {
 
-        exit('Export Prom');
+        var_dump('Partner config', $this->partnerConfig);
+        var_dump('View config', $this->view);
+
+
+        exit;
         if($this->view->isCached() === false) {
 
             $this->view->set('test', 'test2222222');

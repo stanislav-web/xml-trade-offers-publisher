@@ -4,11 +4,12 @@
  * This section contains the settings of global application
  * @version PRODUCTION
  */
-ini_set('display_errors', 'Off');
-error_reporting(0);
 
-//ini_set('display_errors', 'On');
-//error_reporting(E_ALL & ~E_WARNING);
+//ini_set('display_errors', 'Off');
+//error_reporting(0);
+
+ini_set('display_errors', 'On');
+error_reporting(E_ALL & ~E_WARNING);
 
 $config = [
 
@@ -30,7 +31,7 @@ $config = [
                 ],
                 'params' => [
                     'file' => DOCUMENT_ROOT . '../logs/errors.log',
-                    'conversionPattern' => '%date %logger %-5level %msg%n',
+                    //'conversionPattern' => '%date %logger %-5level %msg%n',
                     'append' => true
                 ]
             ],
@@ -43,7 +44,7 @@ $config = [
                 ],
                 'params' => [
                     'file' => DOCUMENT_ROOT . '../logs/info.log',
-                    'conversionPattern' => '%date %logger %-5level %msg%n',
+                    //'conversionPattern' => '%date %logger %-5level %msg%n',
                     'append' => true
                 ]
             ]
@@ -52,6 +53,22 @@ $config = [
 
     // Available services
     'services'  =>  [
+        'prom'    =>  [
+
+            'auth'    =>  [],
+
+            'templates'  =>  [
+                'xml'   =>  DOCUMENT_ROOT . '../Application/Modules/Prom/Views/prom.xml.tpl'
+            ],
+            'headers'    =>  [
+                'xml'   =>  'Content-Type: application/xml; charset=utf-8'
+            ],
+            'cache' => [
+                'enable'    => true,
+                'directory' => DOCUMENT_ROOT . '../cache',
+                'ttl'       => 1,
+            ]
+        ],
         'googlemerchant'    =>  [
 
             'auth'    =>  [],

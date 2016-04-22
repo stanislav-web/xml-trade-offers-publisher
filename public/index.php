@@ -3,6 +3,7 @@
 // Require definitions
 require_once '../config/definitions.php';
 
+
 // Require composite libraries
 require_once DOCUMENT_ROOT . '../vendor/autoload.php';
 

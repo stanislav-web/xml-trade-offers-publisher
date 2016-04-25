@@ -10,7 +10,7 @@ error_reporting(E_ALL & ~E_WARNING);
 return [
 
     // Route rest configuration
-    'routes'    =>  DOCUMENT_ROOT . '../config/routes.yaml',
+    'routes'    =>  DOCUMENT_ROOT . '/../config/routes.yaml',
 
     // Logger @see http://logging.apache.org/log4php/docs/configuration.html
     'logger'    =>  [

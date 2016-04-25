@@ -26,7 +26,7 @@ return [
                     'class' => 'LoggerLayoutPattern'
                 ],
                 'params' => [
-                    'file' => DOCUMENT_ROOT . '../logs/errors.log',
+                    'file' => DOCUMENT_ROOT . '/../logs/errors.log',
                     //'conversionPattern' => '%date %logger %-5level %msg%n',
                     'append' => true
                 ]
@@ -39,7 +39,7 @@ return [
                     'class' => 'LoggerLayoutPattern'
                 ],
                 'params' => [
-                    'file' => DOCUMENT_ROOT . '../logs/info.log',
+                    'file' => DOCUMENT_ROOT . '/../logs/info.log',
                     //'conversionPattern' => '%date %logger %-5level %msg%n',
                     'append' => true
                 ]
@@ -85,7 +85,7 @@ return [
 
             // Output template path
             'templates'  =>  [
-                'xml'   =>  DOCUMENT_ROOT . '../Application/Modules/Prom/Views/prom.xml.tpl'
+                'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/Views/prom.xml.tpl'
             ],
 
             // Output header

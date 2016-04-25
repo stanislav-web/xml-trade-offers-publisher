@@ -31,8 +31,8 @@ class CatalogueController extends ControllerBase {
      */
     public function exportAction() {
 
-        var_dump('Partner config', $this->partnerConfig);
-        var_dump('View config', $this->view);
+//        var_dump('Partner config', $this->partnerConfig);
+//        var_dump('View config', $this->view);
         var_dump('Export data', $this->productExportService->loadExportData());
 
 

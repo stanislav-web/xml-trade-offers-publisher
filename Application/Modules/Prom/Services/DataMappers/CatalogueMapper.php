@@ -60,6 +60,39 @@ class CatalogueMapper extends Data {
 	';
 
     /**
+     * Load product's photos query
+     *
+     * @const LOAD_PRODUCTS_PROPERTIES
+     */
+    const LOAD_PRODUCTS_PROPERTIES = '
+      SELECT prod.`id`, prop.`attributeId`, prop.`variantId`, attr.`name`, prop.`value`, IFNULL(attr.`translationId`, 0) AS propNameTranslationId, IFNULL(prop.`translationId`, 0) AS propValueTranslationId
+	    FROM `productProperties` AS prop
+		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
+		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
+		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = :languageId)
+		    WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
+
+      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.name, mark.`value`, IFNULL(attr.`translationId`, 0) AS attrTranslationId, 0 AS propTranslationId
+	    FROM `productMarketingProperties` AS mark
+		  INNER JOIN products AS prod ON (prod.id = mark.`productId`)
+		  INNER JOIN attributes AS attr ON (attr.id = mark.`attributeId`)
+		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`languageId` = :languageId)
+		    WHERE mark.`value` != \'\' && mark.`attributeId` NOT IN (:excludeAttributes) && mark.`productId` IN(:productIds)
+	ORDER BY 1 ASC;
+    ';
+
+
+    const LOAD_PRODUCTS_DESCRIPTION = '
+    SELECT prod.`id` AS productId, prop.`attributeId`, attr.`name`, prop.`value` AS description, IFNULL(attr.`translationId`, 0) AS propNameTranslationId, IFNULL(prop.`translationId`, 0) AS propValueTranslationId
+	FROM `productProperties` AS prop
+		INNER JOIN products AS prod ON (prod.id = prop.`productId`)
+		INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
+		LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = 1)
+		WHERE prop.`attributeId` IN (299) && prop.`productId` IN(80468,80469,80470)
+
+    ';
+
+    /**
      * Service config
      *
      * array $config
@@ -144,6 +177,23 @@ class CatalogueMapper extends Data {
         $this->db->query(self::LOAD_PRODUCTS_PHOTOS);
         $this->db->bind(':productIds', $productIds);
         $this->db->bind(':photosId', $this->config['params']['photosId']);
+
+        return $this->arraySetKey($this->db->fetchAll(), 'productId');
+    }
+
+    /**
+     * Load product's properties
+     *
+     * @throws \Application\Exceptions\DbException
+     *
+     * @return array
+     */
+    public function loadProductsProperties(array $productIds) {
+
+        $this->db->query(self::LOAD_PRODUCTS_PROPERTIES);
+        $this->db->bind(':productIds', $productIds);
+        $this->db->bind(':languageId', $this->config['params']['languageId']);
+        $this->db->bind(':excludeAttributes', $this->config['params']['excludeAttributes']);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }

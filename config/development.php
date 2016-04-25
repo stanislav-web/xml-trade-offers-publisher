@@ -63,7 +63,9 @@ return [
                 'priceId'           =>  1,
                 'photosId'          =>  27,
                 'languageId'        =>  1,
-                'currency'          =>  1
+                'currency'          =>  1,
+                'descriptionId'     =>  299,
+                'excludeAttributes' =>  [26, 27, 298, 299]
             ],
 
             // Database configuration

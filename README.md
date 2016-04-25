@@ -7,7 +7,7 @@ config/production.php
 
 
 ### Run
-```composer install```
+```composer install -o```
 @see config/routes.yaml
 
 ### Tests

@@ -83,16 +83,20 @@ class Database {
         if (is_null($type)) {
             switch (true) {
                 case is_int($value):
-                    $type = PDO::PARAM_INT;
+                    $type = \PDO::PARAM_INT;
                     break;
                 case is_bool($value):
-                    $type = PDO::PARAM_BOOL;
+                    $type = \PDO::PARAM_BOOL;
                     break;
                 case is_null($value):
-                    $type = PDO::PARAM_NULL;
+                    $type = \PDO::PARAM_NULL;
+                    break;
+                case is_array($value):
+                    $value = implode(',', $value);
+                    $type = \PDO::PARAM_STR;
                     break;
                 default:
-                    $type = PDO::PARAM_STR;
+                    $type = \PDO::PARAM_STR;
             }
         }
         $this->statement->bindValue($param, $value, $type);
@@ -110,23 +114,36 @@ class Database {
     /**
      * Fetching all result
      *
+     * @throws DbException
      * @return array|object|both
      */
     public function fetchAll() {
 
-        $this->execute();
-        return $this->statement->fetchAll($this->config['fetching']);
+        try {
+            $this->execute();
+            return $this->statement->fetchAll($this->config['fetching']);
+        }
+        catch(\PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+
     }
 
     /**
      * Fetching one result
      *
+     * @throws DbException
      * @return array|object|both
      */
     public function fetchOne() {
 
-        $this->execute();
-        return $this->statement->fetch($this->config['fetching']);
+        try {
+            $this->execute();
+            return $this->statement->fetch($this->config['fetching']);
+        }
+        catch(\PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
     }
 
     /**

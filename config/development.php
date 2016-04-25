@@ -53,32 +53,32 @@ return [
 
             // Export params
             'params'    =>  [
-                'productTypes'  =>  [
+                'categories'  =>  [
                     28,     // Tea
                     290,    // Herbal Tea
                     309,    // Tea With Flower
                     600     // Tea mix
                 ],
-                'productStatuses'   =>  [
-                    26 // Moderated
-                ],
-                'warehouses'        =>  [],
-                'priceGroup'        =>  1,
-                'language'          =>  1,
+                'warehouses'        =>  [1],
+                'priceId'           =>  1,
+                'photosId'          =>  27,
+                'languageId'        =>  1,
                 'currency'          =>  1
             ],
 
             // Database configuration
             'db' => [
-                'hostname'  =>  'localhost',
-                'username'  =>  'dev',
-                'password'  =>  '8QSMovWTaS',
-                'database'  =>  'CompassCatalogue',
-                'driver'    =>  'mysql',
-                'charset'   =>  'utf8',
-                'debug'     =>  \PDO::ERRMODE_EXCEPTION,
-                'connect'   =>  \PDO::ATTR_PERSISTENT,
-                'fetching'  =>  \PDO::FETCH_ASSOC,
+                'catalogue' => [
+                    'hostname'  =>  'localhost',
+                    'username'  =>  'dev',
+                    'password'  =>  '8QSMovWTaS',
+                    'database'  =>  'CompassCatalogue',
+                    'driver'    =>  'mysql',
+                    'charset'   =>  'utf8',
+                    'debug'     =>  \PDO::ERRMODE_EXCEPTION,
+                    'connect'   =>  \PDO::ATTR_PERSISTENT,
+                    'fetching'  =>  \PDO::FETCH_ASSOC
+                ]
             ],
 
             // Output template path
@@ -92,68 +92,6 @@ return [
             ],
 
             // Cache template configuration
-            'cache' => [
-                'enable'    => true,
-                'directory' => DOCUMENT_ROOT . '../cache',
-                'ttl'       => 1,
-            ]
-        ],
-        'amazon'    =>  [
-
-            // Create order API
-            'orderApi'  => [
-                'token'     =>  '', // Compass Api token
-                'url'       =>  '', // CSD host
-                'siteId'    =>  1,
-                'warehouseId'=>  1,
-                'currencies' => [
-                    'USD'   =>  2,
-                    'EUR'   =>  3,
-                    'GBP'   =>  4,
-                    'CAD'   =>  7
-                ],
-
-                // CSD Rest path for order create
-                'path'      =>  [
-                    'customer'          =>  '/customers',
-                    'customerCountries' =>  '/countries',
-                    'customerRegions'   =>  '/regions',
-                    'customerAddress'   =>  '/addresses',
-                    'customerPhones'    =>  '/phones',
-                    'customerShipping'  =>  '/shipping-methods',
-                    'customerPayment'   =>  '/payment-methods',
-                ]
-            ],
-
-            //@see http://docs.developer.amazonservices.com/en_US/dev_guide/index.html
-            'export'    =>  [
-                'auth'      =>  [
-                    'awsAccessKeyId'        =>  '',
-                    'awsSecretAccessKey'    =>  '',
-                    'applicationName'       =>  '',
-                    'applicationVersion'    =>  '',
-                    'sellerId'              =>  '',
-                    'marketplaceId'         =>  '',
-                ],
-                'statuses'  =>  ['Pending','Shipped'],
-                'config'    =>  [
-                    'debug'      => false,
-                    'ServiceURL' => 'https://mws.amazonservices.ca',
-                    'UserAgent'  => 'Red Umbrella',
-                    'SignatureVersion' => 2,
-                    'SignatureMethod' => 'HmacSHA256',
-                    'ProxyHost' => null,
-                    'ProxyPort' => -1,
-                    'MaxErrorRetry' => 2,
-                    'ordersCreatedAfter' => 7889231, // the date time() - ordersCreatedAfter
-                ],
-            ],
-            'templates'  =>  [
-                'xml'   =>  DOCUMENT_ROOT . '../Application/Modules/Amazon/Views/amazon.xml.tpl'
-            ],
-            'headers'    =>  [
-                'xml'   =>  'Content-Type: application/xml; charset=utf-8'
-            ],
             'cache' => [
                 'enable'    => true,
                 'directory' => DOCUMENT_ROOT . '../cache',

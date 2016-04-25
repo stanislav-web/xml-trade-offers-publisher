@@ -1,7 +1,6 @@
 <?php
-
 // Require definitions
-require_once '../config/definitions.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'../config/definitions.php';
 
 // Require composite libraries
 require_once DOCUMENT_ROOT . '../vendor/autoload.php';

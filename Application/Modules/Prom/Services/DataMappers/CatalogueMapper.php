@@ -81,14 +81,18 @@ class CatalogueMapper extends Data {
 	ORDER BY 1 ASC;
     ';
 
-
+    /**
+     * Load product's description
+     *
+     * @const LOAD_PRODUCTS_DESCRIPTION
+     */
     const LOAD_PRODUCTS_DESCRIPTION = '
-    SELECT prod.`id` AS productId, prop.`attributeId`, attr.`name`, prop.`value` AS description, IFNULL(attr.`translationId`, 0) AS propNameTranslationId, IFNULL(prop.`translationId`, 0) AS propValueTranslationId
-	FROM `productProperties` AS prop
-		INNER JOIN products AS prod ON (prod.id = prop.`productId`)
-		INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
-		LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = 1)
-		WHERE prop.`attributeId` IN (299) && prop.`productId` IN(80468,80469,80470)
+      SELECT prod.`id` AS productId, prop.`attributeId`, attr.`name`, prop.`value` AS description, IFNULL(attr.`translationId`, 0) AS propNameTranslationId, IFNULL(prop.`translationId`, 0) AS propValueTranslationId
+	    FROM `productProperties` AS prop
+		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
+		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
+		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = 1)
+		  WHERE prop.`attributeId` IN (:descriptionId) && prop.`productId` IN(:productIds)
 
     ';
 
@@ -194,6 +198,22 @@ class CatalogueMapper extends Data {
         $this->db->bind(':productIds', $productIds);
         $this->db->bind(':languageId', $this->config['params']['languageId']);
         $this->db->bind(':excludeAttributes', $this->config['params']['excludeAttributes']);
+
+        return $this->arraySetKey($this->db->fetchAll(), 'productId');
+    }
+
+    /**
+     * Load product's description
+     *
+     * @throws \Application\Exceptions\DbException
+     *
+     * @return array
+     */
+    public function loadProductsDescription(array $productIds) {
+
+        $this->db->query(self::LOAD_PRODUCTS_DESCRIPTION);
+        $this->db->bind(':productIds', $productIds);
+        $this->db->bind(':descriptionId', $this->config['params']['descriptionId']);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }

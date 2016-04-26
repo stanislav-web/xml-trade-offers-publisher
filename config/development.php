@@ -65,7 +65,6 @@ return [
                     290,    // Herbal Tea
                     309,    // Tea With Flower
                     600,    // Tea mix
-                    145     // Region
                 ],
                 'warehouses'        =>  [1],
                 'priceId'           =>  1,

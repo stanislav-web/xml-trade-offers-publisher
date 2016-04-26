@@ -5,11 +5,11 @@ use Application\Aware\Providers\Data;
 use Application\Services\Database;
 
 /**
- * Class CatalogueMapper
+ * Class ProductMapper
  *
  * @package Application\Modules\Prom\Services\DataMappers
  */
-class CatalogueMapper extends Data {
+class ProductMapper extends Data {
 
     /**
      * Load products query
@@ -120,7 +120,7 @@ class CatalogueMapper extends Data {
         $this->config = $config;
 
         if(is_null($this->db) === true) {
-            $this->db = new Database($this->config['db']['catalogue']);
+            $this->db = new Database($this->config['db']);
         }
     }
 

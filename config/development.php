@@ -53,6 +53,12 @@ return [
 
             // Export params
             'params'    =>  [
+                'shop'  =>  [
+                    'name'          =>  'Pacific Tea',
+                    'url'           =>  'http://pacifictea.com',
+                    'encoding'      =>  'UTF-8',
+                    'currency'      =>  'UAH'
+                ],
                 'categories'  =>  [
                     28,     // Tea
                     290,    // Herbal Tea
@@ -70,17 +76,15 @@ return [
 
             // Database configuration
             'db' => [
-                'catalogue' => [
-                    'hostname'  =>  'localhost',
-                    'username'  =>  'dev',
-                    'password'  =>  '8QSMovWTaS',
-                    'database'  =>  'CompassCatalogue',
-                    'driver'    =>  'mysql',
-                    'charset'   =>  'utf8',
-                    'debug'     =>  \PDO::ERRMODE_EXCEPTION,
-                    'connect'   =>  \PDO::ATTR_PERSISTENT,
-                    'fetching'  =>  \PDO::FETCH_ASSOC
-                ]
+                'hostname'  =>  'localhost',
+                'username'  =>  'dev',
+                'password'  =>  '8QSMovWTaS',
+                'database'  =>  'CompassCatalogue',
+                'driver'    =>  'mysql',
+                'charset'   =>  'utf8',
+                'debug'     =>  \PDO::ERRMODE_EXCEPTION,
+                'connect'   =>  \PDO::ATTR_PERSISTENT,
+                'fetching'  =>  \PDO::FETCH_ASSOC
             ],
 
             // Output template path

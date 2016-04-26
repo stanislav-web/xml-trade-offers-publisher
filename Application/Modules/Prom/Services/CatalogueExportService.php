@@ -1,15 +1,17 @@
 <?php
 namespace Application\Modules\Prom\Services;
 
-use Application\Modules\Prom\Services\DataMappers\CatalogueMapper;
+use Application\Modules\Prom\Services\DataMappers\CategoryMapper;
+use Application\Modules\Prom\Services\DataMappers\ProductMapper;
 use Application\Modules\Prom\Models\ProductModel;
+use Application\Modules\Prom\Services\DataMappers\ShopMapper;
 
 /**
- * Class ProductExportService
+ * Class CatalogueExportService
  *
  * @package Application\Modules\Prom\Service
  */
-class ProductExportService {
+class CatalogueExportService {
 
     /**
      * Ready products collection
@@ -19,11 +21,26 @@ class ProductExportService {
     private $productsCollection = [];
 
     /**
-     * Catalogue data mapper
+     * Shop data mapper
      *
-     * @var \Application\Modules\Prom\Services\DataMappers\CatalogueMapper $catalogueMapper
+     * @var \Application\Modules\Prom\Services\DataMappers\ShopMapper $shopMapper
      */
-    private $catalogueMapper = null;
+    private $shopMapper = null;
+
+    /**
+     * Category data mapper
+     *
+     * @var \Application\Modules\Prom\Services\DataMappers\CategoryMapper $categoryMapper
+     */
+    private $categoryMapper = null;
+
+    /**
+     * Product data mapper
+     *
+     * @var \Application\Modules\Prom\Services\DataMappers\ProductMapper $productMapper
+     */
+    private $productMapper = null;
+
 
     /**
      * Init connection
@@ -31,7 +48,9 @@ class ProductExportService {
      * @param array $config
      */
     public function __construct(array $config) {
-        $this->catalogueMapper = new CatalogueMapper($config);
+        $this->shopMapper       = new ShopMapper($config);
+        $this->categoryMapper   = new CategoryMapper($config);
+        $this->productMapper    = new ProductMapper($config);
     }
 
     /**
@@ -41,8 +60,17 @@ class ProductExportService {
      */
     public function loadExportData() {
 
-        $products = $this->catalogueMapper->loadProducts();
-        $productCategories = $this->catalogueMapper->loadProductsCategories();
+        // Load Shop data
+        $shop = $this->shopMapper->loadShop();
+        var_dump('Load Shop data', $shop);
+
+        $categories = $this->categoryMapper->loadCategories();
+        var_dump('Load categories data', $categories);
+
+        exit;
+
+        $products = $this->productMapper->loadProducts();
+        $productCategories = $this->productMapper->loadProductsCategories();
 
         $productsSplit = array_chunk($products, 50, true);
 
@@ -53,9 +81,7 @@ class ProductExportService {
                     $productId,
                     $property['name'],
                     $property['available'],
-                    $productCategories[$productId]['categoryId'],
-                    $productCategories[$productId]['categoryName'],
-                    $productCategories[$productId]['categoryTranslationId']
+                    $productCategories[$productId]['categoryId']
                     )
                 )->load();
             }

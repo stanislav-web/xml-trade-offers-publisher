@@ -1,29 +1,112 @@
 <?php
 namespace Application\Modules\Prom\Models;
+use Application\Aware\Providers\Model;
 
 /**
- * Class ProductModel
+ * Class CategoryModel
  *
  * @package Application\Modules\Prom\Models
  */
-class ProductModel {
-
-    private $product = [];
+class ProductModel extends Model {
 
     /**
-     * @param $productId
+     * Product id
+     *
+     * @var int $productId
      */
-    public function __construct($productId, $productName, $count, $categoryId, $categoryName, $categoryTranslationId) {
+    private $productId = 0;
 
-        $this->product['productId'] = (int)$productId;
-        $this->product['productName'] = trim($productName);
-        $this->product['productCount'] = (int)$count;
-        $this->product['categoryId'] = (int)$categoryId;
-        $this->product['categoryName'] = trim($categoryName);
-        $this->product['categoryTranslationId'] = (int)$categoryTranslationId;
+    /**
+     * Product name
+     *
+     * @var string $productName
+     */
+    private $productName = '';
+
+    /**
+     * Product warehouse available
+     *
+     * @var int $count
+     */
+    private $count = 0;
+
+    /**
+     * Product category id
+     *
+     * @var int $categoryId
+     */
+    private $categoryId = 0;
+
+    /**
+     * Init model
+     *
+     * @param int $productId
+     * @param string $productName
+     * @param int $count
+     * @param int $categoryId
+     */
+    public function __construct($productId, $productName, $count, $categoryId) {
+
+        $this->setProductId($productId)
+            ->setProductName($productName)
+            ->setCount($count)
+            ->setCategoryId($categoryId);
     }
 
-    public function load() {
-        return $this->product;
+    /**
+     * Validate product id
+     *
+     * @param int $productId
+     * @return ProductModel
+     */
+    public function setProductId($productId) {
+
+        $this->productId = (int)$productId;
+        return $this;
+    }
+
+    /**
+     * Validate product name
+     *
+     * @param string $productName
+     * @return ProductModel
+     */
+    public function setProductName($productName) {
+
+        $this->productName = trim($productName);
+        return $this;
+    }
+
+    /**
+     * Validate product count
+     *
+     * @param int $count
+     * @return ProductModel
+     */
+    public function setCount($count) {
+
+        $this->count = $count;
+        return $this;
+    }
+
+    /**
+     * Validate category id
+     *
+     * @param int $categoryId
+     * @return ProductModel
+     */
+    public function setCategoryId($categoryId) {
+
+        $this->categoryId = (int)$categoryId;
+        return $this;
+    }
+
+    /**
+     * Reverse object to real array for all public properties
+     *
+     * @return array
+     */
+    public function toArray() {
+        return  get_object_vars($this);
     }
 }

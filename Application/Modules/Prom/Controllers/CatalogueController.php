@@ -1,7 +1,7 @@
 <?php
 namespace Application\Modules\Prom\Controllers;
 
-use Application\Modules\Prom\Services\ProductExportService;
+use Application\Modules\Prom\Services\CatalogueExportService;
 
 /**
  * Class CatalogueController
@@ -11,11 +11,11 @@ use Application\Modules\Prom\Services\ProductExportService;
 class CatalogueController extends ControllerBase {
 
     /**
-     * Product export service
+     * Catalogue export service
      *
-     * @var \Application\Modules\Prom\Services\ProductExportService $productExportService
+     * @var \Application\Modules\Prom\Services\CatalogueExportService $catalogueExportService
      */
-    private $productExportService;
+    private $catalogueExportService;
 
     /**
      * Initialize services
@@ -24,17 +24,14 @@ class CatalogueController extends ControllerBase {
 
         parent::__construct();
 
-        $this->productExportService = new ProductExportService($this->partnerConfig);
+        $this->catalogueExportService = new CatalogueExportService($this->partnerConfig);
     }
     /**
      * Export catalogue action
      */
     public function exportAction() {
 
-//        var_dump('Partner config', $this->partnerConfig);
-//        var_dump('View config', $this->view);
-        var_dump('Export data', $this->productExportService->loadExportData());
-
+        var_dump('Export data', $this->catalogueExportService->loadExportData());
 
         exit;
         if($this->view->isCached() === false) {

@@ -91,15 +91,12 @@ class Database {
                 case is_null($value):
                     $type = \PDO::PARAM_NULL;
                     break;
-                case is_array($value):
-                    $value = implode(',', $value);
-                    $type = \PDO::PARAM_STR;
-                    break;
                 default:
                     $type = \PDO::PARAM_STR;
             }
         }
-        $this->statement->bindValue($param, $value, $type);
+
+        $this->statement->bind($param, $value, $type);
     }
 
     /**

@@ -67,9 +67,12 @@ class Database {
      * Prepare query
      *
      * @param string $query
+     * @return \PDOStatement
      */
     public function query($query) {
+
         $this->statement = $this->connect->prepare($query);
+        return $this;
     }
 
     /**
@@ -96,7 +99,7 @@ class Database {
             }
         }
 
-        $this->statement->bind($param, $value, $type);
+        $this->statement->bindValue($param, $value, $type);
     }
 
     /**

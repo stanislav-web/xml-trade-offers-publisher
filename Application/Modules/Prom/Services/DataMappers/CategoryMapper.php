@@ -19,7 +19,7 @@ class CategoryMapper extends Data {
      */
     const LOAD_CATEGORIES = '
       SELECT category.id AS categoryId, IF(category.parentId = 1, 0, category.parentId) AS parentId, category.name AS categoryName,
-        IFNULL(category.translationId, 0) AS categoryTranslationId
+        IFNULL(category.translationId, 0) AS categoryTranslateId
           FROM `attributes` AS category
             WHERE category.id IN (:categories) && category.type = \'category\'
     ';
@@ -53,24 +53,22 @@ class CategoryMapper extends Data {
     }
 
     /**
-     * Load categories
+     * Load prepared data from mapper (categories)
      *
      * @throws \Application\Exceptions\DbException
      *
      * @return array
      */
-    public function loadCategories() {
+    public function load() {
 
         $data = [];
 
         $query = str_replace(':categories', implode(',', $this->config['params']['categories']), self::LOAD_CATEGORIES);
-        $this->db->query($query);
-
-        $categories = $this->db->fetchAll();
+        $categories = $this->db->query($query)->fetchAll();
 
         foreach($categories as $category) {
 
-            $categoryModel = new CategoryModel($category['categoryId'], $category['parentId'], $category['categoryName'], $category['categoryTranslationId']);
+            $categoryModel = new CategoryModel($category['categoryId'], $category['parentId'], $category['categoryName'], $category['categoryTranslateId']);
             $data[$category['categoryId']] = $categoryModel->toArray();
         }
 

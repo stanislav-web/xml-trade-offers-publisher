@@ -3,7 +3,7 @@ namespace Application\Modules\Prom\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class CategoryModel
+ * Class ProductModel
  *
  * @package Application\Modules\Prom\Models
  */
@@ -17,6 +17,13 @@ class ProductModel extends Model {
     private $productId = 0;
 
     /**
+     * Product articul
+     *
+     * @var int $productArticul
+     */
+    private $productArticul = 0;
+
+    /**
      * Product name
      *
      * @var string $productName
@@ -26,9 +33,16 @@ class ProductModel extends Model {
     /**
      * Product warehouse available
      *
-     * @var int $count
+     * @var int $available
      */
-    private $count = 0;
+    private $available = 0;
+
+    /**
+     * Product properties
+     *
+     * @var array $properties
+     */
+    private $properties = [];
 
     /**
      * Product category id
@@ -41,15 +55,17 @@ class ProductModel extends Model {
      * Init model
      *
      * @param int $productId
+     * @param int $productArticul
      * @param string $productName
-     * @param int $count
+     * @param int $available
      * @param int $categoryId
      */
-    public function __construct($productId, $productName, $count, $categoryId) {
+    public function __construct($productId, $productArticul, $productName, $available, $categoryId) {
 
         $this->setProductId($productId)
+            ->setProductArticul($productArticul)
             ->setProductName($productName)
-            ->setCount($count)
+            ->setAvailable($available)
             ->setCategoryId($categoryId);
     }
 
@@ -66,6 +82,18 @@ class ProductModel extends Model {
     }
 
     /**
+     * Validate product id
+     *
+     * @param int $productArticul
+     * @return ProductModel
+     */
+    public function setProductArticul($productArticul) {
+
+        $this->productArticul = (int)$productArticul;
+        return $this;
+    }
+
+    /**
      * Validate product name
      *
      * @param string $productName
@@ -78,14 +106,14 @@ class ProductModel extends Model {
     }
 
     /**
-     * Validate product count
+     * Validate product available
      *
-     * @param int $count
+     * @param int $available
      * @return ProductModel
      */
-    public function setCount($count) {
+    public function setAvailable($available) {
 
-        $this->count = $count;
+        $this->available = (int)$available;
         return $this;
     }
 

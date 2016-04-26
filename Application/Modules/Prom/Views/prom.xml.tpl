@@ -1,189 +1,145 @@
-<?xml version="1.0"?>
-<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
-    <channel>
-        <title>Example - Online Store</title>
-        <link>http://www.example.com</link>
-        <description>This is a sample feed containing the required and recommended attributes for a variety of different products</description>
+<?php
 
-        <!-- First example shows what attributes are required and recommended for items that are not in the apparel category -->
-        <item>
-            <!-- The following attributes are always required -->
-            <g:id>TV_123456</g:id>
-            <g:title>LG 22LB4510 - 22" LED TV - 1080p (FullHD)</g:title>
-            <g:description>Attractively styled and boasting stunning picture quality, the LG 22LB4510 - 22&quot; LED TV - 1080p (FullHD) is an excellent television/monitor. The LG 22LB4510 - 22&quot; LED TV - 1080p (FullHD) sports a widescreen 1080p panel, perfect for watching movies in their original format, whilst also providing plenty of working space for your other applications.</g:description>
-            <g:link>http://www.example.com/electronics/tv/22LB4510.html</g:link>
-            <g:image_link>http://images.example.com/TV_123456.png</g:image_link>
-            <g:condition>used</g:condition>
-            <g:availability>in stock</g:availability>
-            <g:price>159.00 USD</g:price>
-            <g:shipping>
-                <g:country>US</g:country>
-                <g:service>Standard</g:service>
-                <g:price>14.95 USD</g:price>
-            </g:shipping>
+use Library\Helper;
+require_once(APP_PATH."Library/CommonHelper.php");
+$helperYML= new Helper();
+?><?xml version="1.0" encoding="<?php echo $data['encoding']; ?>"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="<?php echo date('Y-m-d H:i', time()) ?>">
+    <shop>
+        <name><?php echo $shop['name'] ?></name>
+        <company><?php echo $shop['title'] ?></company>
+        <url>http://<?php echo $host ?>/</url>
+        <currencies>
+            <currency id="<?php echo $shop['currency'] ?>" rate="1"/>
+        </currencies>
+        <categories>
+            <?php  // load categories at first ?>
+            <?php foreach($categories as $category) : ?>
+            <?php if(empty($category['parentId'])): ?>
+            <category id="<?php echo $category['id'] ?>"><?php echo $helperYML->YMLTextPrepare($category['title']) ?></category>
+            <?php endif;?>
+            <?php endforeach; ?>
+            <?php  // load childs categories ?>
+            <?php foreach($categories as $category) : ?>
+            <?php if(!empty($category['parentId'])): ?>
+            <category id="<?php echo $category['id'] ?>" parentID="<?php echo $category['parentId']; ?>"><?php echo $helperYML->YMLTextPrepare($category['title']) ?></category>
+            <?php endif;?>
+            <?php endforeach; ?>
+        </categories>
+        <delivery-options>
+            <option cost="0" days="1-3" />
+        </delivery-options>
+        <offers>
+            <?php foreach($products as $product) : ?>
 
-            <!-- 2 of the following 3 attributes are required fot this item according to the Unique Product Identifier Rules -->
-            <g:gtin>71919219405200</g:gtin>
-            <g:brand>LG</g:brand>
-            <g:mpn>22LB4510/US</g:mpn>
-
-            <!-- The following attributes are not required for this item, but supplying them is recommended -->
-            <g:google_product_category>Electronics > Video > Televisions > Flat Panel Televisions</g:google_product_category>
-            <g:product_type>Consumer Electronics &gt; TVs &gt; Flat Panel TVs</g:product_type>
-        </item>
-
-        <!-- Second example demonstrates the use of CDATA sections instead of entities to deal with special characters. Note that CDATA sections can be used for any attribute -->
-        <item>
-            <!-- The following attributes are always required -->
-            <g:id>DVD-0564738</g:id>
-            <g:title><![CDATA[Merlin: Series 3 - Volume 2 - 3 DVD Box set]]></g:title>
-            <g:description><![CDATA[Episodes 7-13 from the third series of the BBC fantasy drama set in the mythical city of Camelot, telling the tale of the relationship between the young King Arthur (Bradley James) & Merlin (Colin Morgan), the wise sorcerer who guides him to power and beyond. Episodes are: 'The Castle of Fyrien', 'The Eye of the Phoenix', 'Love in the Time of Dragons', 'Queen of Hearts', 'The Sorcerer's Shadow', 'The Coming of Arthur: Part 1' & 'The Coming of Arthur: Part 2']]></g:description>
-            <g:link><![CDATA[http://www.example.com/media/dvd/?sku=384616&src=gshopping&lang=en]]></g:link>
-            <g:image_link><![CDATA[http://images.example.com/DVD-0564738?size=large&format=PNG]]></g:image_link>
-            <g:condition>new</g:condition>
-            <g:availability>in stock</g:availability>
-            <g:price>11.99 USD</g:price>
-            <g:shipping>
-                <g:country>US</g:country>
-                <g:service>Express Mail</g:service>
-                <g:price>3.80 USD</g:price>
-            </g:shipping>
-
-            <!-- 2 out of the 3 unique product identifer attributes are required for this item -->
-            <g:gtin>88392916560500</g:gtin>
-            <g:brand>BBC</g:brand>
-
-            <!-- The following attribute is required because this item is in the 'Media' category -->
-            <g:google_product_category><![CDATA[Media > DVDs & Videos]]></g:google_product_category>
-
-            <!-- The following attributes are not required for this item, but supplying them is recommended if applicable -->
-            <g:product_type><![CDATA[DVDs & Movies > TV Series > Fantasy Drama]]></g:product_type>
-        </item>
-
-        <!-- Third example shows how to include multiple images and shipping types-->
-        <item>
-            <!-- The following attributes are always required -->
-            <g:id>PFM654321</g:id>
-            <g:title>Dior Capture XP Ultimate Wrinkle Correction Creme 1.7 oz</g:title>
-            <g:description>Dior Capture XP Ultimate Wrinkle Correction Creme 1.7 oz reinvents anti-wrinkle care by protecting and relaunching skin cell activity to encourage faster, healthier regeneration.</g:description>
-            <g:link>http://www.example.com/perfumes/product?Dior%20Capture%20R6080%20XP</g:link>
-            <g:image_link>http://images.example.com/PFM654321_1.jpg</g:image_link>
-            <g:condition>new</g:condition>
-            <g:availability>in stock</g:availability>
-            <g:price>99 USD</g:price>
-            <g:shipping>
-                <g:country>US</g:country>
-                <g:service>Standard Rate</g:service>
-                <g:price>4.95 USD</g:price>
-            </g:shipping>
-            <g:shipping>
-                <g:country>US</g:country>
-                <g:service>Next Day</g:service>
-                <g:price>8.50 USD</g:price>
-            </g:shipping>
-
-            <!-- 2 out of the 3 unique product identifer attributes are required for this item  -->
-            <g:gtin>3348901056069</g:gtin>
-            <g:brand>Dior</g:brand>
-
-            <!-- The following attributes are not required for this item, but supplying them is recommended if applicable -->
-            <g:product_type>Health &amp; Beauty &gt; Personal Care &gt; Cosmetics &gt; Skin Care &gt; Lotion</g:product_type>
-            <g:google_product_category>Health &amp; Beauty &gt; Personal Care &gt; Cosmetics &gt; Skin Care &gt; Anti-Aging Skin Care Kits</g:google_product_category>
-            <g:additional_image_link>http://images.example.com/PFM654321_2.jpg</g:additional_image_link>
-            <g:additional_image_link>http://images.example.com/PFM654321_3.jpg</g:additional_image_link>
-        </item>
-
-        <!-- Fourth example shows what attributes are required and recommended for items that are in the apparel category -->
-        <item>
-            <!-- The following attributes are always required -->
-            <g:id>CLO-29473856-1</g:id>
-            <g:title>Roma Cotton Rich Bootcut Jeans - Size 8 Standard</g:title>
-            <g:description>A smart pair of bootcut jeans in stretch cotton.</g:description>
-            <g:link>http://www.example.com/clothing/women/Roma-Cotton-Bootcut-Jeans/?extid=CLO-29473856</g:link>
-            <g:image_link>http://images.example.com/CLO-29473856-front.jpg</g:image_link>
-            <g:condition>new</g:condition>
-            <g:availability>out of stock</g:availability>
-            <g:price>29.50 USD</g:price>
-
-            <!-- The following attributes are required because this item is apparel -->
-            <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Pants &gt; Jeans</g:google_product_category>
-            <g:brand>M&amp;S</g:brand>
-            <g:gender>Female</g:gender>
-            <g:age_group>Adult</g:age_group>
-            <g:color>Navy</g:color>
-            <g:size>8 Standard</g:size>
-
-            <!-- The following attribute is required because this item has variants -->
-            <g:item_group_id>CLO-29473856</g:item_group_id>
-
-            <!-- The following attributes are not required for this item, but supplying them is recommended if applicable -->
-            <g:mpn>B003J5F5EY</g:mpn>
-            <g:product_type>Women's Clothing &gt; Jeans &gt; Bootcut Jeans</g:product_type>
-            <g:additional_image_link>http://images.example.com/CLO-29473856-side.jpg</g:additional_image_link>
-            <g:additional_image_link>http://images.example.com/CLO-29473856-back.jpg</g:additional_image_link>
-        </item>
-
-        <!-- This is a variant of the last item (same 'item group id'). In this case the variant is only by size, but the item could be repeated in the same way for other variants -->
-        <item>
-            <!-- The following attributes are always required -->
-            <g:id>CLO-29473856-2</g:id>
-            <g:title>Roma Cotton Rich Bootcut Jeans - Size 8 Tall</g:title>
-            <g:description>A smart pair of bootcut jeans in stretch cotton.</g:description>
-            <g:link>http://www.example.com/clothing/women/Roma-Cotton-Bootcut-Jeans/?extid=CLO-29473856</g:link>
-            <g:image_link>http://images.example.com/CLO-29473856-front.jpg</g:image_link>
-            <g:condition>new</g:condition>
-            <g:availability>in stock</g:availability>
-            <g:price>29.50 USD</g:price>
-
-            <!-- The following attributes are required because this item is apparel -->
-            <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Pants &gt; Jeans</g:google_product_category>
-            <g:brand>M&amp;S</g:brand>
-            <g:gender>Female</g:gender>
-            <g:age_group>Adult</g:age_group>
-            <g:color>Navy</g:color>
-            <g:size>8 Tall</g:size>
-
-            <!-- The following attribute is required because this item has variants -->
-            <g:item_group_id>CLO-29473856</g:item_group_id>
-
-            <!-- The following attributes are not required for this item, but supplying them is recommended if applicable -->
-            <g:mpn>B003J5F5EY</g:mpn>
-            <g:product_type>Women's Clothing &gt; Jeans &gt; Bootcut Jeans</g:product_type>
-            <g:additional_image_link>http://images.example.com/CLO-29473856-side.jpg</g:additional_image_link>
-            <g:additional_image_link>http://images.example.com/CLO-29473856-back.jpg</g:additional_image_link>
-        </item>
-
-        <!-- Fifth example demonstrates the use of the sale price attributes  -->
-        <item>
-            <!-- The following attributes are always required -->
-            <g:id>CLO-1029384</g:id>
-            <g:title>Tenn Cool Flow Ladies Long Sleeved Cycle Jersey</g:title>
-            <g:description>A ladies' cycling jersey designed for the serious cyclist, tailored to fit a feminine frame. This sporty, vibrant red, black and white jersey is constructed of a special polyester weave that is extremely effective at drawing moisture away from your body, helping to keep you dry.  With an elasticised, gripping waist, it will stay in place for the duration of your cycle, and won't creep up like many other products. It has two elasticised rear pockets and the sleeves are elasticated to prevent creep-up.</g:description>
-            <g:link>http://www.example.com/clothing/sports/product?id=CLO1029384&amp;src=gshopping&amp;popup=false</g:link>
-            <g:image_link>http://images.example.com/CLO-1029384.jpg</g:image_link>
-            <g:condition>new</g:condition>
-            <g:availability>in stock</g:availability>
-            <g:price>33.99 USD</g:price>
-            <g:shipping>
-                <g:country>US</g:country>
-                <g:service>Standard Free Shipping</g:service>
-                <g:price>0 USD</g:price>
-            </g:shipping>
-
-            <!-- The following attributes are required because this item is apparel -->
-            <g:brand>Tenn Cool</g:brand>
-            <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Activewear &gt; Bicycle Activewear &gt; Bicycle Jerseys</g:google_product_category>
-            <g:gender>Female</g:gender>
-            <g:age_group>Adult</g:age_group>
-            <g:color>Black/Red/White</g:color> <!-- Indicates all the colours found on the garment in order of dominance -->
-            <g:size>M</g:size>
-
-            <!-- The following demonstrate the use of the 'sale price' and 'sale price effective date' and attributes -->
-            <g:sale_price>25.49 USD</g:sale_price>
-            <g:sale_price_effective_date>2011-09-01T16:00-08:00/2011-09-03T16:00-08:00</g:sale_price_effective_date>
-
-            <!-- The following attributes are not required for this item, but supplying them is recommended if applicable -->
-            <g:gtin>5060155240282</g:gtin>
-        </item>
-    </channel>
-</rss>
+            <?php $available = ($product['status'] > 0) ? 'true' : 'false'; ?>
+            <?php if (!isset($product['categoriesId'])) continue;?>
+            <?php if (in_array($product['categoriesId'], $excludeCategories)) continue;?>
+            <?php if(!isset($product['prices'][$priceId])) continue;
+                else $prices = $product['prices'][$priceId]; ?>
+            <?php if (!is_array($product['photos']) || !count($product['photos'])) continue; ?>
+            <?php if (count($product['photos']) > 10) $product['photos'] = array_slice($product['photos'], 0, 10); ?>
+            <?php $measures = json_decode($product['measures'], true); ?>
+            <?php if(!empty($product['sizes'])): ?>
+            <?php foreach($product['sizes'] as $size => $count): ?>
+            <?php if($count > 0): ?>
+            <offer id="<?php echo trim($size.'.'.$product['articul']); ?>" group_id="<?php echo trim($product['articul']);?>" selling_type="u" available="<?php echo $available;?>">
+                <name><?php echo $helperYML->YMLTextPrepare($product['title']) ?> <?php echo $helperYML->YMLTextPrepare($product['brand']) ?></name>
+                <categoryId><?php echo $product['categoriesId'] ?></categoryId>
+                <?php if($prices['discount_price'] == $prices['price']):?>
+                <price><?php echo $prices['discount_price'] ?></price>
+                <?php else: ?>
+                <price><?php echo $prices['discount_price'] ?></price>
+                <oldprice><?php echo $prices['price']; ?></oldprice>
+                <?php endif; ?>
+                <currencyId><?php echo $shop['currency'] ?></currencyId>
+                <?php foreach ($product['photos'] as $photo) : ?>
+                <picture><?php echo 'http://' . $host . '/f/p/800x800/catalogue/' . $product['id'] . '/' . $photo ?></picture>
+                <?php endforeach; ?>
+                <vendor><?php echo $helperYML->YMLTextPrepare($product['brand']) ?></vendor>
+                <model><?php echo $helperYML->YMLTextPrepare($product['title']) ?></model>
+                <barcode><?php echo trim($product['articul']); ?></barcode>
+                <?php if(!empty($product['madeIn'])): ?>
+                <country><?php echo $product['madeIn']; ?></country>
+                <?php endif;?>
+                <?php if(!empty($product['weight'])): ?>
+                <param name="Вес" unit="гр"><?php echo $product['weight'] ?></param>
+                <?php endif;?>
+                <?php if(!empty($product['color'])): ?>
+                <param name="Цвет"><?php echo $product['color'] ?></param>
+                <?php endif;?>
+                <?php if(isset($measures['material']) && !empty($measures['material'])): ?>
+                <?php $materialAvailable = ''; foreach($measures['material'] as $material): ?>
+                <?php foreach($material as $m => $percent): ?>
+                <?php if(!empty($percent)):?>
+                <?php $materialAvailable .= $m." ".$percent."% / " ?>
+                <?php else: ?>
+                <?php $materialAvailable .= $m." / " ?>
+                <?php endif;?>
+                <?php endforeach;?>
+                <?php endforeach ?>
+                <?php $sizesAvailable = ''; foreach ($product['sizes'] as $s => $v): ?>
+                <?php if($v > 0) $sizesAvailable .= $s." / " ?>
+                <?php endforeach; ?>
+                <?php $sizesAvailable = rtrim($sizesAvailable, ' / '); ?>
+                <?php if(!empty($sizesAvailable)):?>
+                <param name="Доступные размеры"><?php echo $sizesAvailable; ?></param>
+                <?php endif;?>
+                <param name="Размер"><?php echo $size; ?></param>
+                <param name="Материал" unit="Состав ткани"><?php echo rtrim($materialAvailable,' / '); ?></param>
+                <?php endif;?>
+                <description><![CDATA[<?php echo $helperYML->YMLTextPrepare($product['description']); ?>]]></description>
+                <keywords><?php echo $helperYML->YMLKeywordsPrepare($product); ?></keywords>
+            </offer>
+            <?php endif;?>
+            <?php endforeach;?>
+            <?php unset($groupId); ?>
+            <?php else:?>
+            <offer id="0.<?php echo $product['articul'] ?>" selling_type="u" available="<?php echo $available;?>">
+                <name><?php echo $helperYML->YMLTextPrepare($product['title']) ?></name>
+                <categoryId><?php echo $product['categoriesId'] ?></categoryId>
+                <?php if($prices['discount_price'] == $prices['price']):?>
+                <price><?php echo $prices['discount_price'] ?></price>
+                <?php else: ?>
+                <price><?php echo $prices['discount_price'] ?></price>
+                <oldprice><?php echo $prices['price']; ?></oldprice>
+                <?php endif; ?>
+                <?php if(!empty($prices['discount'])):?>
+                <discount><?php echo $prices['discount'];?></discount>
+                <?php endif; ?>
+                <currencyId><?php echo $shop['currency'] ?></currencyId>
+                <?php foreach ($product['photos'] as $photo) : ?>
+                <picture><?php echo 'http://' . $host . '/f/p/800x800/catalogue/' . $product['id'] . '/' . $photo ?></picture>
+                <?php endforeach; ?>
+                <vendor><?php echo $helperYML->YMLTextPrepare($product['brand']) ?></vendor>
+                <barcode><?php echo $product['articul']; ?></barcode>
+                <?php if(!empty($product['madeIn'])): ?>
+                <country><?php echo $product['madeIn']; ?></country>
+                <?php endif;?>
+                <?php if(!empty($product['weight'])): ?>
+                <param name="Вес" unit="гр"><?php echo $product['weight'] ?></param>
+                <?php endif;?>
+                <?php if(!empty($product['color'])): ?>
+                <param name="Цвет"><?php echo $product['color'] ?></param>
+                <?php endif;?>
+                <?php if(isset($measures['material']) && !empty($measures['material'])): ?>
+                <?php $materialAvailable = ''; foreach($measures['material'] as $material): ?>
+                <?php foreach($material as $m => $percent): ?>
+                <?php if(!empty($percent)):?>
+                <?php $materialAvailable .= $m." ".$percent."% / " ?>
+                <?php else: ?>
+                <?php $materialAvailable .= $m." / " ?>
+                <?php endif;?>
+                <?php endforeach;?>
+                <?php endforeach ?>
+                <param name="Материал" unit="Состав ткани"><?php echo rtrim($materialAvailable,' / '); ?></param>
+                <?php endif;?>
+                <description><![CDATA[<?php echo $helperYML->YMLTextPrepare($product['description']); ?>]]></description>
+                <available><?php echo $available;?></available>
+            </offer>
+            <?php endif;?>
+            <?php endforeach;?>
+        </offers>
+    </shop>
+</yml_catalog>

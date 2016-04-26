@@ -33,9 +33,9 @@ class CategoryModel extends Model {
     /**
      * Category translation id
      *
-     * @var int $categoryTranslationId
+     * @var int $categoryTranslateId
      */
-    private $categoryTranslationId = 0;
+    private $categoryTranslateId = 0;
 
     /**
      * Init model
@@ -43,14 +43,14 @@ class CategoryModel extends Model {
      * @param int $categoryId
      * @param int $parentId
      * @param string $categoryName
-     * @param int $categoryTranslationId
+     * @param int $categoryTranslateId
      */
-    public function __construct($categoryId, $parentId, $categoryName, $categoryTranslationId) {
+    public function __construct($categoryId, $parentId, $categoryName, $categoryTranslateId) {
 
         $this->setCategoryId($categoryId)
             ->setParentId($categoryId)
             ->setCategoryName($categoryName)
-            ->setCategoryTranslationId($categoryTranslationId);
+            ->setCategoryTranslateId($categoryTranslateId);
     }
 
     /**
@@ -80,13 +80,13 @@ class CategoryModel extends Model {
     /**
      * Validate category translation id
      *
-     * @param int $categoryTranslationId
+     * @param int $categoryTranslateId
      * @return CategoryModel
      */
-    private function setCategoryTranslationId($categoryTranslationId) {
+    private function setCategoryTranslateId($categoryTranslateId) {
 
-        $this->categoryTranslationId = (is_null($categoryTranslationId))
-            ? (int)$categoryTranslationId : $this->categoryTranslationId;
+        $this->categoryTranslateId = (is_null($categoryTranslateId))
+            ? (int)$categoryTranslateId : $this->categoryTranslateId;
 
         return $this;
     }

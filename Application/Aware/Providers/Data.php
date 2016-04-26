@@ -16,6 +16,13 @@ abstract class Data {
     abstract public function __construct(array $config);
 
     /**
+     * Load prepared data from mapper
+     *
+     * @return array
+     */
+    abstract public function load();
+
+    /**
      * Set key for multidimensional array
      *
      * @param array $array
@@ -32,6 +39,7 @@ abstract class Data {
                 }
             }
         }
+
         return $result;
     }
 }

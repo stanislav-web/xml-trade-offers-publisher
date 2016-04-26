@@ -57,13 +57,15 @@ return [
                     'name'          =>  'Pacific Tea',
                     'url'           =>  'http://pacifictea.com',
                     'encoding'      =>  'UTF-8',
-                    'currency'      =>  'UAH'
+                    'currency'      =>  'UAH',
+                    'imgPaths'      =>  'http://img%d.pacifictea.com/f/p600x600/catalogue/%d/%s'
                 ],
                 'categories'  =>  [
                     28,     // Tea
                     290,    // Herbal Tea
                     309,    // Tea With Flower
-                    600     // Tea mix
+                    600,    // Tea mix
+                    145     // Region
                 ],
                 'warehouses'        =>  [1],
                 'priceId'           =>  1,
@@ -71,7 +73,8 @@ return [
                 'languageId'        =>  1,
                 'currency'          =>  1,
                 'descriptionId'     =>  299,
-                'excludeAttributes' =>  [26, 27, 298, 299]
+                'countryId'         =>  145,
+                'excludeAttributes' =>  [26, 27, 296, 298, 299]
             ],
 
             // Database configuration

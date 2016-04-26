@@ -2,8 +2,8 @@
 namespace Application\Modules\Prom\Services;
 
 use Application\Modules\Prom\Services\DataMappers\CategoryMapper;
+use Application\Modules\Prom\Services\DataMappers\ProductCollectionMapper;
 use Application\Modules\Prom\Services\DataMappers\ProductMapper;
-use Application\Modules\Prom\Models\ProductModel;
 use Application\Modules\Prom\Services\DataMappers\ShopMapper;
 
 /**
@@ -12,13 +12,6 @@ use Application\Modules\Prom\Services\DataMappers\ShopMapper;
  * @package Application\Modules\Prom\Service
  */
 class CatalogueExportService {
-
-    /**
-     * Ready products collection
-     *
-     * @var array $productsCollection
-     */
-    private $productsCollection = [];
 
     /**
      * Shop data mapper
@@ -35,11 +28,11 @@ class CatalogueExportService {
     private $categoryMapper = null;
 
     /**
-     * Product data mapper
+     * Product collection data mapper
      *
-     * @var \Application\Modules\Prom\Services\DataMappers\ProductMapper $productMapper
+     * @var \Application\Modules\Prom\Services\DataMappers\ProductCollectionMapper $productCollectionMapper
      */
-    private $productMapper = null;
+    private $productCollectionMapper = null;
 
 
     /**
@@ -50,7 +43,7 @@ class CatalogueExportService {
     public function __construct(array $config) {
         $this->shopMapper       = new ShopMapper($config);
         $this->categoryMapper   = new CategoryMapper($config);
-        $this->productMapper    = new ProductMapper($config);
+        $this->productCollectionMapper    = new ProductCollectionMapper(new ProductMapper($config));
     }
 
     /**
@@ -58,43 +51,18 @@ class CatalogueExportService {
      *
      * @return array
      */
-    public function loadExportData() {
+    public function exportData() {
 
         // Load Shop data
-        $shop = $this->shopMapper->loadShop();
-        var_dump('Load Shop data', $shop);
+        $shop = $this->shopMapper->load();
+        print_r($shop);
 
-        $categories = $this->categoryMapper->loadCategories();
-        var_dump('Load categories data', $categories);
+        $categories = $this->categoryMapper->load();
+        print_r($categories);
 
-        exit;
+        $products = $this->productCollectionMapper->load();
+        print_r($products);
 
-        $products = $this->productMapper->loadProducts();
-        $productCategories = $this->productMapper->loadProductsCategories();
 
-        $productsSplit = array_chunk($products, 50, true);
-
-        foreach($productsSplit as $prod) {
-            foreach($prod as $productId => $property) {
-
-                $this->productsCollection[$productId] = (new ProductModel(
-                    $productId,
-                    $property['name'],
-                    $property['available'],
-                    $productCategories[$productId]['categoryId']
-                    )
-                )->load();
-            }
-        }
-
-        var_dump($this->productsCollection); exit;
-
-        //$productPrices = $this->catalogueMapper->loadProductsPrices($products);
-        //$productPhotos = $this->catalogueMapper->loadProductsPhotos($products);
-        //$productProperties = $this->catalogueMapper->loadProductsProperties($products);
-        //$productDescription = $this->catalogueMapper->loadProductsDescription($products);
-        //$productsSet = array_chunk($products, 50, true);
-
-        //return $products;
     }
 }

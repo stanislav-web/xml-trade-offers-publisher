@@ -41,7 +41,7 @@ class Logger {
      * @return string
      */
     public function json($message) {
-        echo json_encode($message);
+        echo json_encode($message, JSON_UNESCAPED_UNICODE);
         return $this;
     }
 }

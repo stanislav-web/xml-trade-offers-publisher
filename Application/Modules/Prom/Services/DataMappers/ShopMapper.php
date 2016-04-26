@@ -34,11 +34,11 @@ class ShopMapper extends Data {
     }
 
     /**
-     * Load shop model
+     * Load prepared data from mapper (shop)
      *
      * @return array
      */
-    public function loadShop() {
+    public function load() {
         return (new ShopModel($this->config['name'], $this->config['url'], $this->config['encoding'], $this->config['currency']))
             ->toArray();
     }

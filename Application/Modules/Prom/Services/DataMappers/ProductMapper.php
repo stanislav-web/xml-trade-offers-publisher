@@ -2,7 +2,9 @@
 namespace Application\Modules\Prom\Services\DataMappers;
 
 use Application\Aware\Providers\Data;
+use Application\Exceptions\NotFoundException;
 use Application\Services\Database;
+use Application\Modules\Prom\Models\ProductModel;
 
 /**
  * Class ProductMapper
@@ -12,12 +14,19 @@ use Application\Services\Database;
 class ProductMapper extends Data {
 
     /**
+     * Products separate chunk parts
+     *
+     * @const PRODUCTS_CHUNK_MAP
+     */
+    const PRODUCTS_CHUNK_MAP = 40;
+
+    /**
      * Load products query
      *
      * @const LOAD_PRODUCTS
      */
     const LOAD_PRODUCTS = '
-      SELECT product.id, product.name, SUM(storage.`count`) AS `available`
+      SELECT product.id, product.articul, product.name, SUM(storage.`count`) AS `available`, category.attributeId AS categoryId
         FROM products AS product
           INNER JOIN `productCategories` AS category ON (category.`productId` = product.id)
           INNER JOIN `productsInStock` AS storage ON (storage.`productId` = product.id && storage.count > 0)
@@ -25,16 +34,18 @@ class ProductMapper extends Data {
               GROUP BY product.id ORDER BY product.id';
 
     /**
-     * Load product's categories query
+     * Load products country query
      *
-     * @const LOAD_PRODUCTS_CATEGORIES
+     * @const LOAD_PRODUCTS_COUNTRY
      */
-    const LOAD_PRODUCTS_CATEGORIES = '
-      SELECT product.id AS productId, category.attributeId AS categoryId, attr.name AS categoryName, IFNULL(attr.translationId, 0) AS categoryTranslationId
-        FROM products AS product
-          INNER JOIN `productCategories` AS category ON (category.`productId` = product.id)
-          INNER JOIN `attributes` AS attr ON (attr.`id` = category.`attributeId`)
-            WHERE category.attributeId IN (:categories) && attr.type = \'category\'';
+    const LOAD_PRODUCTS_COUNTRY = '
+        SELECT product.id AS productId, attr.`name` AS country, attr.`translationId` AS countryTranslateId
+          FROM products AS product
+            INNER JOIN `productCategories` AS category ON (category.`productId` = product.id)
+            INNER JOIN attributes attr ON (attr.id = category.`attributeId` && attr.`parentId` = :countryId)
+              WHERE  product.id IN (:productIds)
+                GROUP BY product.id
+    ';
 
     /**
      * Load product's prices query
@@ -42,7 +53,7 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_PRICES
      */
     const LOAD_PRODUCTS_PRICES = '
-      SELECT pprice.productId, pprice.value AS price, pprice.discount AS percent, pprice.discountValue AS discount, curr.name
+      SELECT pprice.productId, pprice.value AS price, pprice.discount AS percent, pprice.discountValue AS discount, curr.id AS currencyId, curr.name AS currencyName
 	    FROM `productPrices` AS pprice
 	      INNER JOIN `prices` AS price ON (price.id = pprice.`attributeId` && price.id = :priceId)
 	      INNER JOIN `currencies` AS curr ON (curr.id = price.`currencyId`)
@@ -65,14 +76,14 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_PROPERTIES
      */
     const LOAD_PRODUCTS_PROPERTIES = '
-      SELECT prod.`id`, prop.`attributeId`, prop.`variantId`, attr.`name`, prop.`value`, IFNULL(attr.`translationId`, 0) AS propNameTranslationId, IFNULL(prop.`translationId`, 0) AS propValueTranslationId
+      SELECT prod.`id` AS productId, prop.`attributeId`, prop.`variantId`, attr.`name`, prop.`value`, IFNULL(attr.`translationId`, 0) AS nameTranslateId, IFNULL(prop.`translationId`, 0) AS valueTranslateId
 	    FROM `productProperties` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
 		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = :languageId)
 		    WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
 
-      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.name, mark.`value`, IFNULL(attr.`translationId`, 0) AS attrTranslationId, 0 AS propTranslationId
+      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.name, mark.`value`, IFNULL(attr.`translationId`, 0) AS nameTranslateId, 0 AS valueTranslateId
 	    FROM `productMarketingProperties` AS mark
 		  INNER JOIN products AS prod ON (prod.id = mark.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = mark.`attributeId`)
@@ -87,13 +98,27 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_DESCRIPTION
      */
     const LOAD_PRODUCTS_DESCRIPTION = '
-      SELECT prod.`id` AS productId, prop.`attributeId`, attr.`name`, prop.`value` AS description, IFNULL(attr.`translationId`, 0) AS propNameTranslationId, IFNULL(prop.`translationId`, 0) AS propValueTranslationId
+      SELECT prod.`id` AS productId, prop.`value` AS description, IFNULL(prop.`translationId`, 0) AS descriptionTranslateId
 	    FROM `productProperties` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
 		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = 1)
 		  WHERE prop.`attributeId` IN (:descriptionId) && prop.`productId` IN(:productIds)
 
+    ';
+
+    /**
+     * Load product's keywords
+     *
+     * @const LOAD_PRODUCTS_KEYWORDS
+     */
+    const LOAD_PRODUCTS_KEYWORDS = '
+      SELECT prod.id AS productId, GROUP_CONCAT(DISTINCT attr.name) AS keyword
+        FROM products AS  prod
+          LEFT JOIN `productCategories` AS cat ON (cat.`productId` = prod.id)
+          LEFT JOIN `attributes` AS attr ON (attr.`id` = cat.`attributeId` && attr.`type` = \'category\')
+          WHERE prod.id IN (:productIds)
+          GROUP BY productId
     ';
 
     /**
@@ -125,32 +150,39 @@ class ProductMapper extends Data {
     }
 
     /**
+     * Load product data
+     * @return null
+     */
+    public function load() {}
+
+    /**
+     * Load service config data
+     *
+     * @return object
+     */
+    public function loadConfig() {
+        return (object)$this->config;
+    }
+
+    /**
      * Load products
      *
      * @throws \Application\Exceptions\DbException
+     * @throws \Application\Exceptions\NotFoundException
      *
      * @return array
      */
     public function loadProducts() {
 
-        $this->db->query(self::LOAD_PRODUCTS);
-        $this->db->bind(':categories', $this->config['params']['categories']);
-        $this->db->bind(':warehouses', $this->config['params']['warehouses']);
-        return $this->arraySetKey($this->db->fetchAll(), 'id');
-    }
+        $query = str_replace(':categories', implode(',', $this->config['params']['categories']), self::LOAD_PRODUCTS);
+        $query = str_replace(':warehouses', implode(',', $this->config['params']['warehouses']), $query);
 
-    /**
-     * Load product's categories
-     *
-     * @throws \Application\Exceptions\DbException
-     *
-     * @return array
-     */
-    public function loadProductsCategories() {
+        $data = $this->db->query($query)->fetchAll();
+        if($data === false) {
+            throw new NotFoundException('Products not found for configuration\'s criteria');
+        }
 
-        $this->db->query(self::LOAD_PRODUCTS_CATEGORIES);
-        $this->db->bind(':categories', $this->config['params']['categories']);
-        return $this->arraySetKey($this->db->fetchAll(), 'productId');
+        return $this->arraySetKey($data, 'id');
     }
 
     /**
@@ -162,11 +194,15 @@ class ProductMapper extends Data {
      */
     public function loadProductsPrices(array $productIds) {
 
-        $this->db->query(self::LOAD_PRODUCTS_PRICES);
-        $this->db->bind(':productIds', $productIds);
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_PRICES);
+        $this->db->query($query);
         $this->db->bind(':priceId', $this->config['params']['priceId']);
+        $data = $this->db->fetchAll();
 
-        return $this->arraySetKey($this->db->fetchAll(), 'productId');
+        if($data === false) {
+            throw new NotFoundException('Products prices not found');
+        }
+        return $this->arraySetKey($data, 'productId');
     }
 
     /**
@@ -178,9 +214,29 @@ class ProductMapper extends Data {
      */
     public function loadProductsPhotos(array $productIds) {
 
-        $this->db->query(self::LOAD_PRODUCTS_PHOTOS);
-        $this->db->bind(':productIds', $productIds);
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_PHOTOS);
+        $this->db->query($query);
         $this->db->bind(':photosId', $this->config['params']['photosId']);
+        $data = $this->db->fetchAll();
+
+        if($data === false) {
+            throw new NotFoundException('Products photos not found');
+        }
+        return $this->arraySetKey($data, 'productId');
+    }
+
+    /**
+     * Load product's description
+     *
+     * @throws \Application\Exceptions\DbException
+     *
+     * @return array
+     */
+    public function loadProductsDescription(array $productIds) {
+
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_DESCRIPTION);
+        $this->db->query($query);
+        $this->db->bind(':descriptionId', $this->config['params']['descriptionId']);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }
@@ -194,29 +250,42 @@ class ProductMapper extends Data {
      */
     public function loadProductsProperties(array $productIds) {
 
-        $this->db->query(self::LOAD_PRODUCTS_PROPERTIES);
-        $this->db->bind(':productIds', $productIds);
-        $this->db->bind(':languageId', $this->config['params']['languageId']);
-        $this->db->bind(':excludeAttributes', $this->config['params']['excludeAttributes']);
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_PROPERTIES);
+        $query = str_replace(':excludeAttributes', implode(',', $this->config['params']['excludeAttributes']), $query);
 
-        return $this->arraySetKey($this->db->fetchAll(), 'productId');
+        $this->db->query($query);
+        $this->db->bind(':languageId', $this->config['params']['languageId']);
+        return $this->db->fetchAll();
     }
 
     /**
-     * Load product's description
+     * Load product's keywords from properties
      *
      * @throws \Application\Exceptions\DbException
      *
      * @return array
      */
-    public function loadProductsDescription(array $productIds) {
+    public function loadProductsKeywords(array $productIds) {
 
-        $this->db->query(self::LOAD_PRODUCTS_DESCRIPTION);
-        $this->db->bind(':productIds', $productIds);
-        $this->db->bind(':descriptionId', $this->config['params']['descriptionId']);
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_KEYWORDS);
+        $this->db->query($query);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }
 
+    /**
+     * Load product's country
+     *
+     * @throws \Application\Exceptions\DbException
+     *
+     * @return array
+     */
+    public function loadProductsCountry(array $productIds) {
 
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_COUNTRY);
+        $this->db->query($query);
+        $this->db->bind(':countryId', $this->config['params']['countryId']);
+
+        return $this->arraySetKey($this->db->fetchAll(), 'productId');
+    }
 }

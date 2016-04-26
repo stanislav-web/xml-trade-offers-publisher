@@ -31,7 +31,7 @@ class CatalogueController extends ControllerBase {
      */
     public function exportAction() {
 
-        var_dump('Export data', $this->catalogueExportService->loadExportData());
+        var_dump('Export data', $this->catalogueExportService->exportData());
 
         exit;
         if($this->view->isCached() === false) {

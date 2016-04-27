@@ -24,24 +24,15 @@ class ProductCountryModel extends Model {
     private $country = '';
 
     /**
-     * Product country translate id
-     *
-     * @var int $countryTranslateId
-     */
-    private $countryTranslateId = 0;
-
-    /**
      * Init
      *
      * @param int $productId
-     * @param string $imgPaths
-     * @param array $photos
+     * @param string $country
      */
-    public function __construct($productId, $country, $countryTranslateId) {
+    public function __construct($productId, $country) {
 
         $this->setProductId($productId)
-            ->setCountry($country)
-            ->setCountryTranslateId($countryTranslateId);
+            ->setCountry($country);
     }
 
     /**
@@ -65,18 +56,6 @@ class ProductCountryModel extends Model {
     public function setCountry($country) {
 
         $this->country = trim($country);
-        return $this;
-    }
-
-    /**
-     * Validate product country translate id
-     *
-     * @param string $countryTranslateId
-     * @return ProductCountryModel
-     */
-    public function setCountryTranslateId($countryTranslateId) {
-
-        $this->countryTranslateId = (int)$countryTranslateId;
         return $this;
     }
 

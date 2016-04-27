@@ -31,26 +31,17 @@ class CategoryModel extends Model {
     private $categoryName = '';
 
     /**
-     * Category translation id
-     *
-     * @var int $categoryTranslateId
-     */
-    private $categoryTranslateId = 0;
-
-    /**
      * Init model
      *
      * @param int $categoryId
      * @param int $parentId
      * @param string $categoryName
-     * @param int $categoryTranslateId
      */
-    public function __construct($categoryId, $parentId, $categoryName, $categoryTranslateId) {
+    public function __construct($categoryId, $parentId, $categoryName) {
 
         $this->setCategoryId($categoryId)
             ->setParentId($categoryId)
-            ->setCategoryName($categoryName)
-            ->setCategoryTranslateId($categoryTranslateId);
+            ->setCategoryName($categoryName);
     }
 
     /**
@@ -74,20 +65,6 @@ class CategoryModel extends Model {
     private function setParentId($parentId) {
 
         $this->parentId = (int)$parentId;
-        return $this;
-    }
-
-    /**
-     * Validate category translation id
-     *
-     * @param int $categoryTranslateId
-     * @return CategoryModel
-     */
-    private function setCategoryTranslateId($categoryTranslateId) {
-
-        $this->categoryTranslateId = (is_null($categoryTranslateId))
-            ? (int)$categoryTranslateId : $this->categoryTranslateId;
-
         return $this;
     }
 

@@ -18,9 +18,9 @@ class CategoryMapper extends Data {
      * @const LOAD_CATEGORIES
      */
     const LOAD_CATEGORIES = '
-      SELECT category.id AS categoryId, IF(category.parentId = 1, 0, category.parentId) AS parentId, category.name AS categoryName,
-        IFNULL(category.translationId, 0) AS categoryTranslateId
+      SELECT category.id AS categoryId, IF(category.parentId = 1, 0, category.parentId) AS parentId, IFNULL(trans.value, category.name) AS categoryName
           FROM `attributes` AS category
+          LEFT JOIN `translations` AS trans ON (trans.`translationId` = category.`translationId` && trans.`languageId` = :languageId)
             WHERE category.id IN (:categories) && category.type = \'category\'
     ';
 
@@ -64,11 +64,13 @@ class CategoryMapper extends Data {
         $data = [];
 
         $query = str_replace(':categories', implode(',', $this->config['params']['categories']), self::LOAD_CATEGORIES);
-        $categories = $this->db->query($query)->fetchAll();
+        $this->db->query($query);
+        $this->db->bind(':languageId', $this->config['params']['languageId']);
+        $categories = $this->db->fetchAll();
 
         foreach($categories as $category) {
 
-            $categoryModel = new CategoryModel($category['categoryId'], $category['parentId'], $category['categoryName'], $category['categoryTranslateId']);
+            $categoryModel = new CategoryModel($category['categoryId'], $category['parentId'], $category['categoryName']);
             $data[$category['categoryId']] = $categoryModel->toArray();
         }
 

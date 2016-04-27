@@ -24,24 +24,16 @@ class ProductDescriptionModel extends Model {
     private $description = '';
 
     /**
-     * Product description translate id
-     *
-     * @var int $descriptionTranslateId
-     */
-    private $descriptionTranslateId = 0;
-
-    /**
      * Init
      *
      * @param int $productId
      * @param string $imgPaths
      * @param array $photos
      */
-    public function __construct($productId, $description, $descriptionTranslateId) {
+    public function __construct($productId, $description) {
 
         $this->setProductId($productId)
-            ->setDescription($description)
-            ->setDescriptionTranslateId($descriptionTranslateId);
+            ->setDescription($description);
     }
 
     /**
@@ -65,18 +57,6 @@ class ProductDescriptionModel extends Model {
     public function setDescription($description) {
 
         $this->description = trim($description);
-        return $this;
-    }
-
-    /**
-     * Validate product description translate id
-     *
-     * @param string $descriptionTranslateId
-     * @return ProductDescriptionModel
-     */
-    public function setDescriptionTranslateId($descriptionTranslateId) {
-
-        $this->descriptionTranslateId = (int)$descriptionTranslateId;
         return $this;
     }
 

@@ -57,7 +57,7 @@ return [
                     'name'          =>  'Pacific Tea',
                     'url'           =>  'http://pacifictea.com',
                     'encoding'      =>  'UTF-8',
-                    'currency'      =>  'UAH',
+                    'currency'      =>  'USD',
                     'imgPaths'      =>  'http://img%d.pacifictea.com/f/p600x600/catalogue/%d/%s'
                 ],
                 'categories'  =>  [
@@ -69,7 +69,7 @@ return [
                 'warehouses'        =>  [1],
                 'priceId'           =>  1,
                 'photosId'          =>  27,
-                'languageId'        =>  1,
+                'languageId'        =>  2,
                 'currency'          =>  1,
                 'descriptionId'     =>  299,
                 'countryId'         =>  145,

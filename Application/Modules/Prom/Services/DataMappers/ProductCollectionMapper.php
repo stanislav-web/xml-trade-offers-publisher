@@ -155,8 +155,7 @@ class ProductCollectionMapper {
 
                 $this->productsCollection[$productId] = array_merge($this->productsCollection[$productId], (new ProductDescriptionModel(
                     $productDesc['productId'],
-                    $productDesc['description'],
-                    $productDesc['descriptionTranslateId']
+                    $productDesc['description']
                 ))->toArray());
             }
         }
@@ -180,9 +179,7 @@ class ProductCollectionMapper {
                     $productProp['attributeId'],
                     $productProp['variantId'],
                     $productProp['name'],
-                    $productProp['value'],
-                    $productProp['nameTranslateId'],
-                    $productProp['valueTranslateId']
+                    $productProp['value']
                 ))->toArray();
             }
         }
@@ -225,8 +222,7 @@ class ProductCollectionMapper {
 
                 $this->productsCollection[$productId] = array_merge($this->productsCollection[$productId], (new ProductCountryModel(
                     $productCountry['productId'],
-                    $productCountry['country'],
-                    $productCountry['countryTranslateId']
+                    $productCountry['country']
                 ))->toArray());
             }
         }

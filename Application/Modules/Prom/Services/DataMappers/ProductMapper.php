@@ -39,10 +39,11 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_COUNTRY
      */
     const LOAD_PRODUCTS_COUNTRY = '
-        SELECT product.id AS productId, attr.`name` AS country, attr.`translationId` AS countryTranslateId
+        SELECT product.id AS productId, IFNULL(trans.value, attr.`name`) AS country
           FROM products AS product
             INNER JOIN `productCategories` AS category ON (category.`productId` = product.id)
             INNER JOIN attributes attr ON (attr.id = category.`attributeId` && attr.`parentId` = :countryId)
+            LEFT JOIN `translations` trans ON (trans.`translationId` = attr.`translationId` && trans.`languageId` = :languageId)
               WHERE  product.id IN (:productIds)
                 GROUP BY product.id
     ';
@@ -76,20 +77,22 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_PROPERTIES
      */
     const LOAD_PRODUCTS_PROPERTIES = '
-      SELECT prod.`id` AS productId, prop.`attributeId`, prop.`variantId`, attr.`name`, prop.`value`, IFNULL(attr.`translationId`, 0) AS nameTranslateId, IFNULL(prop.`translationId`, 0) AS valueTranslateId
+      SELECT prod.`id` AS productId, prop.`attributeId`, prop.`variantId`, IFNULL(transAttr.value, attr.`name`) AS name, IFNULL(transProp.value, prop.`value`) AS value
 	    FROM `productProperties` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
-		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = :languageId)
-		    WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
+		  LEFT JOIN translations AS transAttr ON (transAttr.`translationId` = attr.`translationId`&& transAttr.`languageId` = :languageId)
+		  LEFT JOIN translations AS transProp ON (transProp.`translationId` = prop.`translationId`&& transProp.`languageId` = :languageId)
 
-      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.name, mark.`value`, IFNULL(attr.`translationId`, 0) AS nameTranslateId, 0 AS valueTranslateId
+		 WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
+
+      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, IFNULL(transAttr.value, attr.`name`) AS name, mark.`value`
 	    FROM `productMarketingProperties` AS mark
 		  INNER JOIN products AS prod ON (prod.id = mark.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = mark.`attributeId`)
-		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`languageId` = :languageId)
+		  LEFT JOIN translations AS transAttr ON (transAttr.`translationId` = attr.`translationId`&& transAttr.`languageId` = :languageId)
 		    WHERE mark.`value` != \'\' && mark.`attributeId` NOT IN (:excludeAttributes) && mark.`productId` IN(:productIds)
-	ORDER BY 1 ASC;
+	ORDER BY 1 ASC
     ';
 
     /**
@@ -98,11 +101,11 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_DESCRIPTION
      */
     const LOAD_PRODUCTS_DESCRIPTION = '
-      SELECT prod.`id` AS productId, prop.`value` AS description, IFNULL(prop.`translationId`, 0) AS descriptionTranslateId
+      SELECT prod.`id` AS productId, IFNULL(trans.value, prop.`value`) AS description
 	    FROM `productProperties` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
-		  LEFT JOIN translations AS trans ON (trans.`translationId` = attr.`translationId` && trans.`translationId` = prop.`translationId`&& trans.`languageId` = 1)
+		  LEFT JOIN translations AS trans ON (trans.`translationId` = prop.`translationId` && trans.`languageId` = :languageId)
 		  WHERE prop.`attributeId` IN (:descriptionId) && prop.`productId` IN(:productIds)
 
     ';
@@ -113,10 +116,11 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_KEYWORDS
      */
     const LOAD_PRODUCTS_KEYWORDS = '
-      SELECT prod.id AS productId, GROUP_CONCAT(DISTINCT attr.name) AS keyword
+      SELECT prod.id AS productId, GROUP_CONCAT(DISTINCT IFNULL(trans.value, attr.name)) AS keyword
         FROM products AS  prod
           LEFT JOIN `productCategories` AS cat ON (cat.`productId` = prod.id)
           LEFT JOIN `attributes` AS attr ON (attr.`id` = cat.`attributeId` && attr.`type` = \'category\')
+          LEFT JOIN `translations` AS trans ON (trans.`translationId` = attr.`translationId` && trans.`languageId` = :languageId)
           WHERE prod.id IN (:productIds)
           GROUP BY productId
     ';
@@ -235,8 +239,10 @@ class ProductMapper extends Data {
     public function loadProductsDescription(array $productIds) {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_DESCRIPTION);
+
         $this->db->query($query);
         $this->db->bind(':descriptionId', $this->config['params']['descriptionId']);
+        $this->db->bind(':languageId', $this->config['params']['languageId']);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }
@@ -269,6 +275,7 @@ class ProductMapper extends Data {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_KEYWORDS);
         $this->db->query($query);
+        $this->db->bind(':languageId', $this->config['params']['languageId']);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }
@@ -283,8 +290,10 @@ class ProductMapper extends Data {
     public function loadProductsCountry(array $productIds) {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_COUNTRY);
+
         $this->db->query($query);
         $this->db->bind(':countryId', $this->config['params']['countryId']);
+        $this->db->bind(':languageId', $this->config['params']['languageId']);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }

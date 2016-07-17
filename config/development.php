@@ -73,6 +73,9 @@ return [
                 'currency'          =>  1,
                 'descriptionId'     =>  299,
                 'countryId'         =>  145,
+                'units'             => [    // attributeId e.g "Weight" represented as 'gr.'
+                    3   =>  'gr.'
+                ],
                 'excludeAttributes' =>  [26, 27, 296, 298, 299]
             ],
 

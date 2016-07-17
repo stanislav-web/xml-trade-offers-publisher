@@ -24,7 +24,6 @@ class ExportFactory {
      */
     private $class;
 
-
     /**
      * Class params
      *

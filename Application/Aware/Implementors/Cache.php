@@ -114,11 +114,14 @@ trait Cache {
      */
     public function cache($content) {
 
-        $result = file_put_contents($this->cacheFile, $content, LOCK_EX);
+        if (true === $this->isCacheEnabled) {
+            $result = file_put_contents($this->cacheFile, $content, LOCK_EX);
 
-        if($result === false) {
-            throw new InternalServerErrorException('Can not store cache content to file: '.$this->cacheFile, InternalServerErrorException::CODE);
+            if($result === false) {
+                throw new InternalServerErrorException('Can not store cache content to file: '.$this->cacheFile, InternalServerErrorException::CODE);
+            }
         }
+
         return true;
     }
 }

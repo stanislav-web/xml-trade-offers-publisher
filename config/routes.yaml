@@ -1,4 +1,4 @@
 base_path: /
 
 routes:
-  PromCatalogueUa:          [/catalogue/pacifictea/export/prom/view/xml, Application\Modules\Prom\Controllers\CatalogueController.exportAction, GET]
+  PromPacificCatalogueUa:   [/catalogue/pacifictea/export/prom/view/xml, Application\Modules\Prom\PacificTea\Controllers\CatalogueController.exportAction, GET]

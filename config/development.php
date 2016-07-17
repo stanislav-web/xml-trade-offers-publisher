@@ -91,7 +91,7 @@ return [
 
             // Output template path
             'templates'  =>  [
-                'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/Views/prom.xml.tpl'
+                'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/PacificTea/Views/prom.xml.tpl'
             ],
 
             // Output header
@@ -101,7 +101,7 @@ return [
 
             // Cache template configuration
             'cache' => [
-                'enable'    => true,
+                'enable'    => false,
                 'directory' => DOCUMENT_ROOT . '../cache',
                 'ttl'       => 1,
             ]

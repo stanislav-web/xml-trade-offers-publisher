@@ -1,5 +1,5 @@
 <?php
-namespace Application\Modules\Prom\PacificTea\Controllers;
+namespace Application\Modules\Prom\Lecabaret\Controllers;
 
 use Application\Services\Db;
 use Application\Services\View;
@@ -8,7 +8,7 @@ use Application\Services\Request;
 /**
  * Class ControllerBase
  *
- * @package Application\Controllers
+ * @package Application\Modules\Prom\Lecabaret\Controllers
  */
 class ControllerBase {
 

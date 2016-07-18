@@ -1,23 +1,23 @@
 <?php
-namespace Application\Modules\Prom\PacificTea\Services\DataMappers;
+namespace Application\Modules\Prom\Lecabaret\Services\DataMappers;
 
 /**
  * @connect validate models
  */
 use Application\Aware\Providers\Data;
-use Application\Modules\Prom\PacificTea\Models\ProductCountryModel;
-use Application\Modules\Prom\PacificTea\Models\ProductDescriptionModel;
-use Application\Modules\Prom\PacificTea\Models\ProductKeywordsModel;
-use Application\Modules\Prom\PacificTea\Models\ProductModel;
-use Application\Modules\Prom\PacificTea\Models\ProductPhotosModel;
-use Application\Modules\Prom\PacificTea\Models\ProductPriceModel;
-use Application\Modules\Prom\PacificTea\Models\ProductPropertiesModel;
-use Application\Modules\Prom\PacificTea\Models\ProductBrandModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductCountryModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductDescriptionModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductKeywordsModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductPhotosModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductPriceModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductPropertiesModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductBrandModel;
 
 /**
  * Class ProductCollectionMapper
  *
- * @package Application\Modules\Prom\Service
+ * @package Application\Modules\Prom\Lecabaret\Services\DataMappers
  */
 class ProductCollectionMapper {
 
@@ -38,7 +38,7 @@ class ProductCollectionMapper {
     /**
      * Product data mapper
      *
-     * @var \Application\Modules\Prom\PacificTea\Services\DataMappers\ProductMapper $productMapper
+     * @var \Application\Modules\Prom\Lecabaret\Services\DataMappers\ProductMapper $productMapper
      */
     private $productMapper = null;
 

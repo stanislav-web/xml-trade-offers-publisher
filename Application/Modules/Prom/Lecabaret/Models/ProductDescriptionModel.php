@@ -1,11 +1,11 @@
 <?php
-namespace Application\Modules\Prom\PacificTea\Models;
+namespace Application\Modules\Prom\Lecabaret\Models;
 use Application\Aware\Providers\Model;
 
 /**
  * Class ProductDescriptionModel
  *
- * @package Application\Modules\Prom\Models
+ * @package Application\Modules\Prom\Lecabaret\Models
  */
 class ProductDescriptionModel extends Model {
 

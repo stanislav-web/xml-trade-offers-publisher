@@ -3,11 +3,11 @@ namespace Application\Modules\Prom\PacificTea\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class ProductDescriptionModel
+ * Class ProductBrandModel
  *
  * @package Application\Modules\Prom\Models
  */
-class ProductDescriptionModel extends Model {
+class ProductBrandModel extends Model {
 
     /**
      * Product id
@@ -17,29 +17,29 @@ class ProductDescriptionModel extends Model {
     private $productId = 0;
 
     /**
-     * Product description
+     * Product brand
      *
-     * @var string $description
+     * @var string $brand
      */
-    private $description = '';
+    private $brand = '';
 
     /**
      * Init
      *
      * @param int $productId
-     * @param string $description
+     * @param string $brand
      */
-    public function __construct($productId, $description) {
+    public function __construct($productId, $brand) {
 
         $this->setProductId($productId)
-            ->setDescription($description);
+            ->setBrand($brand);
     }
 
     /**
      * Validate product id
      *
      * @param int $productId
-     * @return ProductDescriptionModel
+     * @return ProductBrandModel
      */
     public function setProductId($productId) {
 
@@ -48,14 +48,14 @@ class ProductDescriptionModel extends Model {
     }
 
     /**
-     * Validate product description
+     * Validate product brand
      *
-     * @param string $description
-     * @return ProductDescriptionModel
+     * @param string $brand
+     * @return ProductBrandModel
      */
-    public function setDescription($description) {
+    public function setBrand($brand) {
 
-        $this->description = trim($description);
+        $this->brand = trim($brand);
         return $this;
     }
 

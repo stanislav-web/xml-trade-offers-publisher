@@ -1,13 +1,13 @@
 <?php
-namespace Application\Modules\Prom\PacificTea\Models;
+namespace Application\Modules\Prom\Lecabaret\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class ProductDescriptionModel
+ * Class ProductKeywordsModel
  *
- * @package Application\Modules\Prom\Models
+ * @package Application\Modules\Prom\Lecabaret\Models
  */
-class ProductDescriptionModel extends Model {
+class ProductKeywordsModel extends Model {
 
     /**
      * Product id
@@ -17,29 +17,29 @@ class ProductDescriptionModel extends Model {
     private $productId = 0;
 
     /**
-     * Product description
+     * Product keywords
      *
-     * @var string $description
+     * @var string $keywords
      */
-    private $description = '';
+    private $keywords = '';
 
     /**
      * Init
      *
      * @param int $productId
-     * @param string $description
+     * @param string $keywords
      */
-    public function __construct($productId, $description) {
+    public function __construct($productId, $keywords) {
 
         $this->setProductId($productId)
-            ->setDescription($description);
+            ->setKeywords($keywords);
     }
 
     /**
      * Validate product id
      *
      * @param int $productId
-     * @return ProductDescriptionModel
+     * @return ProductKeywordsModel
      */
     public function setProductId($productId) {
 
@@ -48,14 +48,14 @@ class ProductDescriptionModel extends Model {
     }
 
     /**
-     * Validate product description
+     * Validate product keywords
      *
-     * @param string $description
-     * @return ProductDescriptionModel
+     * @param string $keywords
+     * @return ProductKeywordsModel
      */
-    public function setDescription($description) {
+    public function setKeywords($keywords) {
 
-        $this->description = trim($description);
+        $this->keywords = trim($keywords);
         return $this;
     }
 

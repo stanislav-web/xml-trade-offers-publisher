@@ -2,3 +2,4 @@ base_path: /
 
 routes:
   PromPacificCatalogueUa:   [/catalogue/pacifictea/export/prom/view/xml, Application\Modules\Prom\PacificTea\Controllers\CatalogueController.exportAction, GET]
+  PromLecabaretCatalogueUa: [/catalogue/lecabaret/export/prom/view/xml, Application\Modules\Prom\Lecabaret\Controllers\CatalogueController.exportAction, GET]

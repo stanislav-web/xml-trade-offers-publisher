@@ -40,7 +40,7 @@ class CategoryModel extends Model {
     public function __construct($categoryId, $parentId, $categoryName) {
 
         $this->setCategoryId($categoryId)
-            ->setParentId($categoryId)
+            ->setParentId($parentId)
             ->setCategoryName($categoryName);
     }
 

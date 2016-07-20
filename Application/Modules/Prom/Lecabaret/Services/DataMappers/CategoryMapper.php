@@ -64,7 +64,6 @@ class CategoryMapper extends Data {
 
         $query = str_replace(':categories', implode(',', $this->config['params']['categories']), self::LOAD_CATEGORIES);
         $this->db->query($query);
-        $this->db->bind(':languageId', $this->config['params']['languageId']);
         $categories = $this->db->fetchAll();
 
         foreach($categories as $category) {

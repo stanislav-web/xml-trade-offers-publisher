@@ -24,6 +24,7 @@ class ProductMapper extends Data {
      * Load products query
      *
      * @const LOAD_PRODUCTS
+     * @TODO Drop the limit
      */
     const LOAD_PRODUCTS = '
       SELECT product.id, product.articul, product.name, SUM(storage.`count`) AS `available`, category.attributeId AS categoryId
@@ -32,7 +33,7 @@ class ProductMapper extends Data {
           INNER JOIN `productsInStock` AS storage ON (storage.`productId` = product.id && storage.count > 0)
               WHERE category.attributeId IN (:categories)
               && storage.`warehouseId` IN (:warehouses)
-              GROUP BY product.id ORDER BY product.id';
+              GROUP BY product.id ORDER BY product.id LIMIT 10';
 
     /**
      * Load products country query
@@ -82,7 +83,7 @@ class ProductMapper extends Data {
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
 
-		 WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
+		 WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`value` != 0 && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
 
       UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.`name` AS name, mark.`value`
 	    FROM `productMarketingProperties` AS mark
@@ -285,7 +286,6 @@ class ProductMapper extends Data {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_PROPERTIES);
         $query = str_replace(':excludeAttributes', implode(',', $this->config['params']['excludeAttributes']), $query);
-
         $this->db->query($query);
         return $this->db->fetchAll();
     }

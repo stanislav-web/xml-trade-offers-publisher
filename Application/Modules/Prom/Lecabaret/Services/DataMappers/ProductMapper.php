@@ -33,7 +33,7 @@ class ProductMapper extends Data {
           INNER JOIN `productsInStock` AS storage ON (storage.`productId` = product.id && storage.count > 0)
               WHERE category.attributeId IN (:categories)
               && storage.`warehouseId` IN (:warehouses)
-              GROUP BY product.id ORDER BY product.id LIMIT 10';
+              GROUP BY product.id ORDER BY product.id LIMIT 20';
 
     /**
      * Load products country query
@@ -47,6 +47,19 @@ class ProductMapper extends Data {
             INNER JOIN attributes attr ON (attr.id = category.`attributeId` && attr.`parentId` = :countryId)
               WHERE  product.id IN (:productIds)
                 GROUP BY product.id
+    ';
+
+    /**
+     * Load products sizes query
+     *
+     * @const LOAD_PRODUCTS_SIZES
+     */
+    const LOAD_PRODUCTS_SIZES = '
+        SELECT storage.productId, storage.variantId, attr.name AS `size`, `count`
+          FROM productsInStock AS storage
+            LEFT JOIN attributes AS attr ON (storage.variantId = attr.id && attr.parentId = 11)
+              WHERE storage.productId IN(:productIds);
+
     ';
 
     /**
@@ -78,14 +91,15 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_PROPERTIES
      */
     const LOAD_PRODUCTS_PROPERTIES = '
-      SELECT prod.`id` AS productId, prop.`attributeId`, prop.`variantId`, attr.`name` AS name, prop.`value` AS value
+      SELECT prod.`id` AS productId, prop.`attributeId`, prop.`variantId`, attr.`name` AS name, prop.`value` AS value, units.name AS unit
 	    FROM `productProperties` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
+		  LEFT JOIN measurementUnits AS units ON (units.id = attr.`measurementUnitId`)
 
 		 WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`value` != 0 && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
 
-      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.`name` AS name, mark.`value`
+      UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.`name` AS name, mark.`value`, null
 	    FROM `productMarketingProperties` AS mark
 		  INNER JOIN products AS prod ON (prod.id = mark.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = mark.`attributeId`)
@@ -321,4 +335,23 @@ class ProductMapper extends Data {
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
     }
+
+    /**
+     * Load product's sizes
+     *
+     * @throws \Application\Exceptions\DbException
+     *
+     * @return array
+     */
+    public function loadProductsSizes(array $productIds) {
+
+        $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_SIZES);
+
+        $this->db->query($query);
+
+        return $this->arraySetKey($this->db->fetchAll(), 'variantId');
+    }
+
+
+
 }

@@ -13,6 +13,7 @@ use Application\Modules\Prom\Lecabaret\Models\ProductPhotosModel;
 use Application\Modules\Prom\Lecabaret\Models\ProductPriceModel;
 use Application\Modules\Prom\Lecabaret\Models\ProductPropertiesModel;
 use Application\Modules\Prom\Lecabaret\Models\ProductBrandModel;
+use Application\Modules\Prom\Lecabaret\Models\ProductSizesModel;
 
 /**
  * Class ProductCollectionMapper
@@ -57,9 +58,10 @@ class ProductCollectionMapper {
         $this->addProductsPhotos();
         $this->addProductsDescriptions();
         $this->addProductsBrands();
-        $this->addProductsProperties();
         $this->addProductsKeywords();
         $this->addProductsCountry();
+        $this->addProductsSizes();
+        $this->addProductsProperties();
     }
 
     /**
@@ -187,30 +189,6 @@ class ProductCollectionMapper {
     }
 
     /**
-     * Add properties to existing products
-     */
-    private function addProductsProperties() {
-
-        $productsChunks = array_chunk($this->productsCollection, self::PRODUCTS_CHUNK_MAP, true);
-
-        foreach($productsChunks as $products) {
-            $productsIds = array_keys($products);
-            $productProps = $this->productMapper->loadProductsProperties($productsIds);
-
-            foreach($productProps as $productProp) {
-
-                $this->productsCollection[$productProp['productId']]['properties'][] = (new ProductPropertiesModel(
-                    $productProp['productId'],
-                    $productProp['attributeId'],
-                    $productProp['variantId'],
-                    $productProp['name'],
-                    $productProp['value']
-                ))->toArray();
-            }
-        }
-    }
-
-    /**
      * Add keywords to products collection
      *
      * @throws \Application\Exceptions\NotFoundException
@@ -249,6 +227,56 @@ class ProductCollectionMapper {
                     $productCountry['productId'],
                     $productCountry['country']
                 ))->toArray());
+            }
+        }
+    }
+
+    /**
+     * Add sizes to existing products
+     */
+    private function addProductsSizes() {
+
+        $productsChunks = array_chunk($this->productsCollection, self::PRODUCTS_CHUNK_MAP, true);
+
+        foreach($productsChunks as $products) {
+            $productsIds = array_keys($products);
+            $productSizes = $this->productMapper->loadProductsSizes($productsIds);
+
+            foreach($productSizes as $productSize) {
+
+                $this->productsCollection[$productSize['productId']]['sizes'][$productSize['variantId']] = (new ProductSizesModel(
+                    $productSize['productId'],
+                    $productSize['variantId'],
+                    $productSize['size'],
+                    $productSize['count']
+                ))->toArray();
+            }
+        }
+    }
+
+    /**
+     * Add properties to existing products
+     */
+    private function addProductsProperties() {
+
+        $productsChunks = array_chunk($this->productsCollection, self::PRODUCTS_CHUNK_MAP, true);
+
+        foreach($productsChunks as $products) {
+            $productsIds = array_keys($products);
+            $productProps = $this->productMapper->loadProductsProperties($productsIds);
+
+            foreach($productProps as $productProp) {
+
+                if(isset($this->productsCollection[$productProp['productId']]['sizes'][$productProp['variantId']])) {
+                    $this->productsCollection[$productProp['productId']]['sizes'][$productProp['variantId']]['properties'][] = (new ProductPropertiesModel(
+                        $productProp['productId'],
+                        $productProp['attributeId'],
+                        $productProp['variantId'],
+                        $productProp['name'],
+                        $productProp['value'],
+                        $productProp['unit']
+                    ))->toArray();
+                }
             }
         }
     }

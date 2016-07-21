@@ -74,7 +74,7 @@
                         <!-- Product required properties -->
                         <?php foreach($product['properties'] as $property):?>
                         <?php if(true === isset($this->data['units'][$property['attributeId']])): ?>
-                            <param name="<?=$property['name'];?>" unit="<?=$this->data['units'][$property['attributeId']];?>"><?=$property['value'];?></param>
+                            <param name="<?=($property['name'] === 'Weight') ? 'Вес' : $property['name'];?>" unit="<?=$this->data['units'][$property['attributeId']];?>"><?=$property['value'];?></param>
                         <?php else: ?>
                             <param name="<?=$property['name'];?>"><?$property['value'];?></param>
                         <?php endif;?>

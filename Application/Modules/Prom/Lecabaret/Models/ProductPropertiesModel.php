@@ -45,20 +45,29 @@ class ProductPropertiesModel extends Model {
     private $value = null;
 
     /**
+     * Product property unit (gr, sm dm3)
+     *
+     * @var string $unit
+     */
+    private $unit = '';
+
+    /**
      * Init
      * @param int $productId
      * @param int $attributeId
      * @param int $variantId
      * @param string $name
      * @param string|int $value
+     * @param string $unit
      */
-    public function __construct($productId, $attributeId, $variantId, $name, $value) {
+    public function __construct($productId, $attributeId, $variantId, $name, $value, $unit) {
 
         //$this->setProductId($productId)
             $this->setAttributeId($attributeId)
             ->setVariantId($variantId)
             ->setName($name)
-            ->setValue($value);
+            ->setValue($value)
+            ->setUnit($unit);
     }
 
     /**
@@ -118,6 +127,18 @@ class ProductPropertiesModel extends Model {
     public function setValue($value) {
 
         $this->value = trim($value);
+        return $this;
+    }
+
+    /**
+     * Validate product property unit
+     *
+     * @param string $unit
+     * @return ProductPropertiesModel
+     */
+    public function setUnit($unit) {
+
+        $this->unit = trim($unit);
         return $this;
     }
 

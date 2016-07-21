@@ -144,7 +144,7 @@ return [
                     'brandId'           =>  2,
                     'descriptionId'     =>  299,
                     'countryId'         =>  223,
-                    'units'             => [    // attributeId e.g "Weight" represented as 'gr.'
+                    'measurementUnitId' => [    // attributeId e.g "Weight" represented as 'gr.'
                         3   =>  'гр.'
                     ],
                     'excludeAttributes' =>  [26, 27, 296, 298, 299]

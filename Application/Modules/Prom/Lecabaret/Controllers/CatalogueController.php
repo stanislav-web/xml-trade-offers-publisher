@@ -32,7 +32,6 @@ class CatalogueController extends ControllerBase {
     public function exportAction() {
 
         $exportData = $this->catalogueExportService->exportData();
-        print_r($exportData); exit;
 
         if($this->view->isCached() === false) {
 

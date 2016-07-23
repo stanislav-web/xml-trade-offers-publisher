@@ -136,11 +136,19 @@ class ProductCollectionMapper {
             $productPhotos = $this->productMapper->loadProductsPhotos($productsIds);
             foreach($productPhotos as $productId => $productPhoto) {
 
-                $this->productsCollection[$productId] = array_merge($this->productsCollection[$productId], (new ProductPhotosModel(
-                    $productPhoto['productId'],
-                    $this->productMapper->loadConfig()->params['shop']['imgPaths'],
-                    $productPhoto['photos']
-                ))->toArray());
+                if($productPhoto['photos'] != '[]' && $productPhoto['photos'] != '') {
+                    $this->productsCollection[$productId] = array_merge($this->productsCollection[$productId], (new ProductPhotosModel(
+                        $productPhoto['productId'],
+                        $this->productMapper->loadConfig()->params['shop']['imgPaths'],
+                        $productPhoto['photos']
+                    ))->toArray());
+                }
+                else {
+                    // remove products with empty photos
+                    if (isset ($this->productsCollection[$productId])) {
+                        unset ($this->productsCollection[$productId]);
+                    }
+                }
             }
         }
     }
@@ -240,16 +248,23 @@ class ProductCollectionMapper {
 
         foreach($productsChunks as $products) {
             $productsIds = array_keys($products);
+
             $productSizes = $this->productMapper->loadProductsSizes($productsIds);
 
             foreach($productSizes as $productSize) {
 
-                $this->productsCollection[$productSize['productId']]['sizes'][$productSize['variantId']] = (new ProductSizesModel(
-                    $productSize['productId'],
-                    $productSize['variantId'],
-                    $productSize['size'],
-                    $productSize['count']
-                ))->toArray();
+                if ( 0 < $productSize['count']) {
+                    $sizes = (new ProductSizesModel(
+                        $productSize['productId'],
+                        $productSize['variantId'],
+                        $productSize['size'],
+                        $productSize['count']
+                    ))->toArray();
+
+                    if(isset($this->productsCollection[$sizes['productId']])) {
+                        $this->productsCollection[$sizes['productId']]['sizes'][$sizes['variantId']] = $sizes;
+                    }
+                }
             }
         }
     }
@@ -267,15 +282,26 @@ class ProductCollectionMapper {
 
             foreach($productProps as $productProp) {
 
-                if(isset($this->productsCollection[$productProp['productId']]['sizes'][$productProp['variantId']])) {
-                    $this->productsCollection[$productProp['productId']]['sizes'][$productProp['variantId']]['properties'][] = (new ProductPropertiesModel(
-                        $productProp['productId'],
+                if(isset($this->productsCollection[$productProp['productId']])) {
+
+                    $properties = (new ProductPropertiesModel(
                         $productProp['attributeId'],
                         $productProp['variantId'],
                         $productProp['name'],
                         $productProp['value'],
                         $productProp['unit']
                     ))->toArray();
+
+                    if(isset($this->productsCollection[$productProp['productId']]['sizes'][$productProp['variantId']])) {
+                        // add property to sizes
+                        $this->productsCollection[$productProp['productId']]['sizes'][$productProp['variantId']]['properties'][] = $properties;
+                    }
+                    else {
+                        // add overall property
+                        if (0 == $properties['variantId']) {
+                            $this->productsCollection[$productProp['productId']]['properties'][] = $productProp;
+                        }
+                    }
                 }
             }
         }

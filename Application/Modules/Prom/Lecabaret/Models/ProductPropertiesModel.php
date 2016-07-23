@@ -10,13 +10,6 @@ use Application\Aware\Providers\Model;
 class ProductPropertiesModel extends Model {
 
     /**
-     * Product id
-     *
-     * @var int $productId
-     */
-    //private $productId = 0;
-
-    /**
      * Product property attribute id
      *
      * @var int $attributeId
@@ -53,34 +46,20 @@ class ProductPropertiesModel extends Model {
 
     /**
      * Init
-     * @param int $productId
      * @param int $attributeId
      * @param int $variantId
      * @param string $name
      * @param string|int $value
      * @param string $unit
      */
-    public function __construct($productId, $attributeId, $variantId, $name, $value, $unit) {
+    public function __construct($attributeId, $variantId, $name, $value, $unit) {
 
-        //$this->setProductId($productId)
             $this->setAttributeId($attributeId)
             ->setVariantId($variantId)
             ->setName($name)
             ->setValue($value)
             ->setUnit($unit);
     }
-
-    /**
-     * Validate product id
-     *
-     * @param int $productId
-     * @return ProductPropertiesModel
-     */
-//    public function setProductId($productId) {
-//
-//        $this->productId = (int)$productId;
-//        return $this;
-//    }
 
     /**
      * Validate product attribute id

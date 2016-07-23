@@ -24,7 +24,6 @@ class ProductMapper extends Data {
      * Load products query
      *
      * @const LOAD_PRODUCTS
-     * @TODO Drop the limit
      */
     const LOAD_PRODUCTS = '
       SELECT product.id, product.articul, product.name, SUM(storage.`count`) AS `available`, category.attributeId AS categoryId
@@ -33,7 +32,7 @@ class ProductMapper extends Data {
           INNER JOIN `productsInStock` AS storage ON (storage.`productId` = product.id && storage.count > 0)
               WHERE category.attributeId IN (:categories)
               && storage.`warehouseId` IN (:warehouses)
-              GROUP BY product.id ORDER BY product.id LIMIT 20';
+              GROUP BY product.id ORDER BY product.id';
 
     /**
      * Load products country query
@@ -58,8 +57,8 @@ class ProductMapper extends Data {
         SELECT storage.productId, storage.variantId, attr.name AS `size`, `count`
           FROM productsInStock AS storage
             LEFT JOIN attributes AS attr ON (storage.variantId = attr.id && attr.parentId = 11)
-              WHERE storage.productId IN(:productIds);
-
+              WHERE storage.productId IN(:productIds)
+              GROUP BY productId, variantId;
     ';
 
     /**
@@ -282,7 +281,6 @@ class ProductMapper extends Data {
     public function loadProductsBrands(array $productIds) {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_BRAND);
-
         $this->db->query($query);
         $this->db->bind(':brandId', $this->config['params']['brandId']);
 
@@ -300,6 +298,7 @@ class ProductMapper extends Data {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_PROPERTIES);
         $query = str_replace(':excludeAttributes', implode(',', $this->config['params']['excludeAttributes']), $query);
+
         $this->db->query($query);
         return $this->db->fetchAll();
     }
@@ -314,6 +313,7 @@ class ProductMapper extends Data {
     public function loadProductsKeywords(array $productIds) {
 
         $query = str_replace(':productIds', implode(',', $productIds), self::LOAD_PRODUCTS_KEYWORDS);
+
         $this->db->query($query);
 
         return $this->arraySetKey($this->db->fetchAll(), 'productId');
@@ -349,9 +349,7 @@ class ProductMapper extends Data {
 
         $this->db->query($query);
 
-        return $this->arraySetKey($this->db->fetchAll(), 'variantId');
+        return $this->db->fetchAll();
     }
-
-
 
 }

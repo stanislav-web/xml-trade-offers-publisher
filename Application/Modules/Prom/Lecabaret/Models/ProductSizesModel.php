@@ -14,7 +14,7 @@ class ProductSizesModel extends Model {
      *
      * @var int $productId
      */
-    //private $productId = 0;
+    private $productId;
 
     /**
      * Product property variant id
@@ -38,13 +38,6 @@ class ProductSizesModel extends Model {
     private $count = 0;
 
     /**
-     * Product properties
-     *
-     * @var array $properties
-     */
-    private $properties = [];
-
-    /**
      * Init
      * @param int $productId
      * @param int $variantId
@@ -53,8 +46,8 @@ class ProductSizesModel extends Model {
      */
     public function __construct($productId, $variantId, $size, $count) {
 
-        //$this->setProductId($productId)
-            $this->setVariantId($variantId)
+        $this->setProductId($productId)
+            ->setVariantId($variantId)
             ->setSize($size)
             ->setCount($count);
     }
@@ -65,11 +58,11 @@ class ProductSizesModel extends Model {
      * @param int $productId
      * @return ProductSizesModel
      */
-//    public function setProductId($productId) {
-//
-//        $this->productId = (int)$productId;
-//        return $this;
-//    }
+    public function setProductId($productId) {
+
+        $this->productId = (int)$productId;
+        return $this;
+    }
 
     /**
      * Validate product variant id

@@ -35,6 +35,13 @@ class CatalogueExportService {
     private $productCollectionMapper = null;
 
     /**
+     * Product collection data mapper
+     *
+     * @var array $propertyMeasurementUnitsTrans
+     */
+    private $propertyMeasurementUnitsTrans = [];
+
+    /**
      * Init connection
      *
      * @param array $config
@@ -43,6 +50,7 @@ class CatalogueExportService {
         $this->shopMapper       = new ShopMapper($config);
         $this->categoryMapper   = new CategoryMapper($config);
         $this->productCollectionMapper    = new ProductCollectionMapper(new ProductMapper($config));
+        $this->propertyMeasurementUnitsTrans = $config['params']['unitsTrans'];
     }
 
     /**
@@ -65,6 +73,7 @@ class CatalogueExportService {
             'shop'          => $shop,
             'categories'    => $categories,
             'products'      => $products,
+            'units'         => $this->propertyMeasurementUnitsTrans
         ]);
         return $data;
     }

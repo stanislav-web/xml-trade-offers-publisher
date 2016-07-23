@@ -144,8 +144,14 @@ return [
                     'brandId'           =>  2,
                     'descriptionId'     =>  299,
                     'countryId'         =>  223,
-                    'measurementUnitId' => [    // attributeId e.g "Weight" represented as 'gr.'
-                        3   =>  'гр.'
+                    'unitsTrans' => [    // attributeId e.g "Weight" represented as 'gr.'
+                        'name'  =>  [
+                            'Weight'    =>  'Вес'
+                        ],
+                        'unit' => [
+                            'cm'    =>  'см.',
+                            'g'     =>  'гр.'
+                        ]
                     ],
                     'excludeAttributes' =>  [26, 27, 296, 298, 299]
                 ],
@@ -165,7 +171,7 @@ return [
 
                 // Output template path
                 'templates'  =>  [
-                    'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/PacificTea/Views/prom.xml.tpl'
+                    'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/Lecabaret/Views/prom.xml.tpl'
                 ],
 
                 // Output header
@@ -175,9 +181,9 @@ return [
 
                 // Cache template configuration
                 'cache' => [
-                    'enable'    => false,
+                    'enable'    => true,
                     'directory' => DOCUMENT_ROOT . '../cache',
-                    'ttl'       => 1,
+                    'ttl'       => 300,
                 ]
             ],
         ]

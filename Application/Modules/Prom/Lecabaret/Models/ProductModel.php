@@ -38,18 +38,18 @@ class ProductModel extends Model {
     private $available = 0;
 
     /**
-     * Product properties
-     *
-     * @var array $properties
-     */
-    private $properties = [];
-
-    /**
      * Product category id
      *
      * @var int $categoryId
      */
     private $categoryId = 0;
+
+    /**
+     * Product sizes
+     *
+     * @var array $sizes
+     */
+    private $sizes = [];
 
     /**
      * Init model

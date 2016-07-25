@@ -76,7 +76,10 @@ class CategoryModel extends Model {
      */
     private function setCategoryName($categoryName) {
 
-        $this->categoryName = trim($categoryName);
+        $categoryName = trim($categoryName);
+        $this->categoryName = mb_strtoupper(mb_substr(trim($categoryName), 0, 1, 'UTF-8'), 'UTF-8') .
+            mb_substr($categoryName, 1, mb_strlen($categoryName), 'UTF-8');
+
         return $this;
     }
 

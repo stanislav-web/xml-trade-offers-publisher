@@ -115,7 +115,9 @@ class ProductPriceModel extends Model {
      */
     public function setDiscountValue($discountValue) {
 
-        $this->discountValue = number_format($discountValue, 2);
+        if (0 < $discountValue) {
+            $this->discountValue = number_format($discountValue, 2);
+        }
         return $this;
     }
 

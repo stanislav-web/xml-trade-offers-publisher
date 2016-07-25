@@ -117,14 +117,29 @@ class View {
             throw new NotFoundException('Template '.$this->file.' does not found');
         }
 
-        header($this->header);
 
-        if(file_exists($this->cacheFile)) {
-            $this->file = $this->cacheFile;
+        if ( true === isset($_GET['download'])) {
+
+            if(file_exists($this->cacheFile)) {
+                $this->file = $this->cacheFile;
+            }
+            header('Content-type: text/xml');
+            header('Content-Disposition: attachment; filename="'.time().'.xml"');
+            include $this->file;
+            $data = ob_get_contents();
+            exit($data);
         }
-        ob_start();
-        include $this->file;
-        $data = ob_get_contents();
-        return $data;
+        else {
+
+            header($this->header);
+
+            if(file_exists($this->cacheFile)) {
+                $this->file = $this->cacheFile;
+            }
+            ob_start();
+            include $this->file;
+            $data = ob_get_contents();
+            return $data;
+        }
     }
 }

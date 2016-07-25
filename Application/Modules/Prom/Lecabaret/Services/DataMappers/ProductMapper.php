@@ -67,7 +67,7 @@ class ProductMapper extends Data {
      * @const LOAD_PRODUCTS_PRICES
      */
     const LOAD_PRODUCTS_PRICES = '
-      SELECT pprice.productId, pprice.value AS price, pprice.discount AS percent, pprice.discountValue AS discount, curr.id AS currencyId, curr.name AS currencyName
+      SELECT pprice.productId, pprice.value AS price, pprice.discount AS percent, pprice.discountValue, curr.id AS currencyId, curr.name AS currencyName
 	    FROM `productPrices` AS pprice
 	      INNER JOIN `prices` AS price ON (price.id = pprice.`attributeId` && price.id = :priceId)
 	      INNER JOIN `currencies` AS curr ON (curr.id = price.`currencyId`)
@@ -94,16 +94,15 @@ class ProductMapper extends Data {
 	    FROM `productProperties` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId`)
-		  LEFT JOIN measurementUnits AS units ON (units.id = attr.`measurementUnitId`)
+		  LEFT JOIN measurementUnits AS units ON (units.id = attr.`measurementUnitId` && attr.`measurementUnitId`)
 
 		 WHERE prop.`value` != \'\' && prop.`value` != \'-\' && prop.`value` != 0 && prop.`attributeId` NOT IN (:excludeAttributes) && prop.`productId` IN(:productIds)
-
+         GROUP BY prod.`id`, prop.`attributeId`
       UNION ALL SELECT prod.`id`, mark.`attributeId`, mark.`variantId`, attr.`name` AS name, mark.`value`, null
 	    FROM `productMarketingProperties` AS mark
 		  INNER JOIN products AS prod ON (prod.id = mark.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = mark.`attributeId`)
 		    WHERE mark.`value` != \'\' && mark.`attributeId` NOT IN (:excludeAttributes) && mark.`productId` IN(:productIds)
-	ORDER BY 1 ASC
     ';
 
     /**
@@ -126,10 +125,10 @@ class ProductMapper extends Data {
      */
     const LOAD_PRODUCTS_BRAND = '
       SELECT prod.`id` AS productId, attr.name AS brand
-	    FROM `productProperties` AS prop
+	    FROM `productCategories` AS prop
 		  INNER JOIN products AS prod ON (prod.id = prop.`productId`)
 		  INNER JOIN attributes AS attr ON (attr.id = prop.`attributeId` && attr.`type` = \'category\')
-		  WHERE attr.`parentId` IN (:brandId) && prop.`productId` IN(:productIds)
+		  WHERE attr.`parentId` = :brandId && prop.`productId` IN(:productIds)
     ';
 
     /**

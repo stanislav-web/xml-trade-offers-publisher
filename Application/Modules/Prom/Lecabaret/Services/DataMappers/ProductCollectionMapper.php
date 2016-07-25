@@ -111,14 +111,22 @@ class ProductCollectionMapper {
            $productPrices = $this->productMapper->loadProductsPrices($productsIds);
            foreach($productPrices as $productId => $productPrice) {
 
-               $this->productsCollection[$productId] = array_merge($this->productsCollection[$productId], (new ProductPriceModel(
+               if (false === empty($productPrice['price'])) {
+                   $this->productsCollection[$productId] = array_merge($this->productsCollection[$productId], (new ProductPriceModel(
                        $productPrice['productId'],
                        $productPrice['price'],
                        $productPrice['percent'],
-                       $productPrice['discount'],
+                       $productPrice['discountValue'],
                        $productPrice['currencyId'],
                        $productPrice['currencyName']
                    ))->toArray());
+               }
+               else {
+                   // remove products with empty prices
+                   if (isset ($this->productsCollection[$productId])) {
+                       unset ($this->productsCollection[$productId]);
+                   }
+               }
             }
         }
     }

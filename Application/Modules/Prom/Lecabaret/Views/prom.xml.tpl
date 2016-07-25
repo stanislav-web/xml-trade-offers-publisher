@@ -24,9 +24,12 @@
         </delivery-options>
         <offers>
             <?php foreach($this->data['products'] as $product) : ?>
-                <?php if(false === isset($product['sizes'])): ?>
+                <?php if($product['available'] <= 0): ?>
+                    <?php continue; ?>
+                <?php endif;?>
+                <?php if(false === isset($product['sizes']) && true === isset($product['photos']) && isset($product['price'])): ?>
                     <offer id="<?=$product['productArticul'] ?>" selling_type="u" available="<?=($product['available'] > 0) ? 'true' : 'false';?>">
-                        <name><?=$product['productName'] ?></name>
+                        <name><?=$product['productName']; ?></name>
                         <categoryId><?=$product['categoryId'];?></categoryId>
                         <?php if($product['discountValue'] == $product['price']):?>
                         <price><?=$product['price'] ?></price>
@@ -62,7 +65,7 @@
                         <?php endif;?>
                         <available><?=$product['available'];?></available>
                     </offer>
-                <?php else: ?>
+                <?php elseif(true === isset($product['photos']) && isset($product['price'])): ?>
                     <?php foreach($product['sizes'] as $size): ?>
                         <offer id="<?=$size['size'].$product['productArticul'] ?>" selling_type="u" available="<?=($product['available'] > 0) ? 'true' : 'false';?>">
                             <name><?=$product['productName'] ?></name>

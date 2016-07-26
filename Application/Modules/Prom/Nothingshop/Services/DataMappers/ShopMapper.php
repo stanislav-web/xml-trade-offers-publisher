@@ -1,14 +1,14 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Services\DataMappers;
+namespace Application\Modules\Prom\Nothingshop\Services\DataMappers;
 
 use Application\Aware\Providers\Data;
-use Application\Modules\Prom\Lecabaret\Models\ShopModel;
+use Application\Modules\Prom\Nothingshop\Models\ShopModel;
 use Application\Exceptions\InternalServerErrorException;
 
 /**
  * Class ShopMapper
  *
- * @package Application\Modules\Prom\Lecabaret\Services\DataMappers
+ * @package Application\Modules\Prom\Nothingshop\Services\DataMappers
  */
 class ShopMapper extends Data {
 

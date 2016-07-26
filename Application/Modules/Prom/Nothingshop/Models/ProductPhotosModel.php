@@ -1,11 +1,11 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Models;
+namespace Application\Modules\Prom\Nothingshop\Models;
 use Application\Aware\Providers\Model;
 
 /**
  * Class ProductPhotosModel
  *
- * @package Application\Modules\Prom\Lecabaret\Models
+ * @package Application\Modules\Prom\Nothingshop\Models
  */
 class ProductPhotosModel extends Model {
 

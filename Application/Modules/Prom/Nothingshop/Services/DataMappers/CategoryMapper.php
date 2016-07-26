@@ -1,14 +1,14 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Services\DataMappers;
+namespace Application\Modules\Prom\Nothingshop\Services\DataMappers;
 
 use Application\Aware\Providers\Data;
 use Application\Services\Database;
-use Application\Modules\Prom\Lecabaret\Models\CategoryModel;
+use Application\Modules\Prom\Nothingshop\Models\CategoryModel;
 
 /**
  * Class CategoryMapper
  *
- * @package Application\Modules\Prom\Lecabaret\Services\DataMappers
+ * @package Application\Modules\Prom\Nothingshop\Services\DataMappers
  */
 class CategoryMapper extends Data {
 

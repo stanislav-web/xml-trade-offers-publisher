@@ -110,15 +110,15 @@ return [
                     'ttl'       => 1,
                 ]
             ],
-            'lecabaret'     => [
+            'nothingshop'     => [
                 // Export params
                 'params'    =>  [
                     'shop'  =>  [
-                        'name'          =>  'Lecabaret',
-                        'url'           =>  'http://beta.lecabaret.ua',
+                        'name'          =>  'Nothingshop',
+                        'url'           =>  'http://nothingshop.com.ua/',
                         'encoding'      =>  'UTF-8',
                         'currency'      =>  'UAH',
-                        'imgPaths'      =>  'http://img%d.beta.lecabaret.ua/f/p600x600/catalogue/%d/%s'
+                        'imgPaths'      =>  'http://img%d.nothingshop.com.ua/f/p600x600/catalogue/%d/%s'
                     ],
                     'categories'  =>  [
                         779,780,781,782,783,784,785,786,787,788,789,790,
@@ -171,7 +171,7 @@ return [
 
                 // Output template path
                 'templates'  =>  [
-                    'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/Lecabaret/Views/prom.xml.tpl'
+                    'xml'   =>  DOCUMENT_ROOT . '/../Application/Modules/Prom/Nothingshop/Views/prom.xml.tpl'
                 ],
 
                 // Output header

@@ -1,13 +1,13 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Models;
+namespace Application\Modules\Prom\Nothingshop\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class ProductKeywordsModel
+ * Class ProductBrandModel
  *
- * @package Application\Modules\Prom\Lecabaret\Models
+ * @package Application\Modules\Prom\Nothingshop\Models
  */
-class ProductKeywordsModel extends Model {
+class ProductBrandModel extends Model {
 
     /**
      * Product id
@@ -17,29 +17,29 @@ class ProductKeywordsModel extends Model {
     private $productId = 0;
 
     /**
-     * Product keywords
+     * Product brand
      *
-     * @var string $keywords
+     * @var string $brand
      */
-    private $keywords = '';
+    private $brand = '';
 
     /**
      * Init
      *
      * @param int $productId
-     * @param string $keywords
+     * @param string $brand
      */
-    public function __construct($productId, $keywords) {
+    public function __construct($productId, $brand) {
 
         $this->setProductId($productId)
-            ->setKeywords($keywords);
+            ->setBrand($brand);
     }
 
     /**
      * Validate product id
      *
      * @param int $productId
-     * @return ProductKeywordsModel
+     * @return ProductBrandModel
      */
     public function setProductId($productId) {
 
@@ -48,14 +48,14 @@ class ProductKeywordsModel extends Model {
     }
 
     /**
-     * Validate product keywords
+     * Validate product brand
      *
-     * @param string $keywords
-     * @return ProductKeywordsModel
+     * @param string $brand
+     * @return ProductBrandModel
      */
-    public function setKeywords($keywords) {
+    public function setBrand($brand) {
 
-        $this->keywords = trim($keywords);
+        $this->brand = trim($brand);
         return $this;
     }
 

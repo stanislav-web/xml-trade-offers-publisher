@@ -1,13 +1,13 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Models;
+namespace Application\Modules\Prom\Nothingshop\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class ProductBrandModel
+ * Class ProductDescriptionModel
  *
- * @package Application\Modules\Prom\Lecabaret\Models
+ * @package Application\Modules\Prom\Nothingshop\Models
  */
-class ProductBrandModel extends Model {
+class ProductDescriptionModel extends Model {
 
     /**
      * Product id
@@ -17,29 +17,29 @@ class ProductBrandModel extends Model {
     private $productId = 0;
 
     /**
-     * Product brand
+     * Product description
      *
-     * @var string $brand
+     * @var string $description
      */
-    private $brand = '';
+    private $description = '';
 
     /**
      * Init
      *
      * @param int $productId
-     * @param string $brand
+     * @param string $description
      */
-    public function __construct($productId, $brand) {
+    public function __construct($productId, $description) {
 
         $this->setProductId($productId)
-            ->setBrand($brand);
+            ->setDescription($description);
     }
 
     /**
      * Validate product id
      *
      * @param int $productId
-     * @return ProductBrandModel
+     * @return ProductDescriptionModel
      */
     public function setProductId($productId) {
 
@@ -48,14 +48,14 @@ class ProductBrandModel extends Model {
     }
 
     /**
-     * Validate product brand
+     * Validate product description
      *
-     * @param string $brand
-     * @return ProductBrandModel
+     * @param string $description
+     * @return ProductDescriptionModel
      */
-    public function setBrand($brand) {
+    public function setDescription($description) {
 
-        $this->brand = trim($brand);
+        $this->description = trim($description);
         return $this;
     }
 

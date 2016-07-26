@@ -1,13 +1,13 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Models;
+namespace Application\Modules\Prom\Nothingshop\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class ProductCountryModel
+ * Class ProductKeywordsModel
  *
- * @package Application\Modules\Prom\Lecabaret\Models
+ * @package Application\Modules\Prom\Nothingshop\Models
  */
-class ProductCountryModel extends Model {
+class ProductKeywordsModel extends Model {
 
     /**
      * Product id
@@ -17,29 +17,29 @@ class ProductCountryModel extends Model {
     private $productId = 0;
 
     /**
-     * Product country
+     * Product keywords
      *
-     * @var string $country
+     * @var string $keywords
      */
-    private $country = '';
+    private $keywords = '';
 
     /**
      * Init
      *
      * @param int $productId
-     * @param string $country
+     * @param string $keywords
      */
-    public function __construct($productId, $country) {
+    public function __construct($productId, $keywords) {
 
         $this->setProductId($productId)
-            ->setCountry($country);
+            ->setKeywords($keywords);
     }
 
     /**
      * Validate product id
      *
      * @param int $productId
-     * @return ProductCountryModel
+     * @return ProductKeywordsModel
      */
     public function setProductId($productId) {
 
@@ -48,14 +48,14 @@ class ProductCountryModel extends Model {
     }
 
     /**
-     * Validate product country
+     * Validate product keywords
      *
-     * @param string country
-     * @return ProductCountryModel
+     * @param string $keywords
+     * @return ProductKeywordsModel
      */
-    public function setCountry($country) {
+    public function setKeywords($keywords) {
 
-        $this->country = trim($country);
+        $this->keywords = trim($keywords);
         return $this;
     }
 

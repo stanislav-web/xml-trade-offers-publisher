@@ -1,36 +1,36 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Services;
+namespace Application\Modules\Prom\Nothingshop\Services;
 
-use Application\Modules\Prom\Lecabaret\Services\DataMappers\CategoryMapper;
-use Application\Modules\Prom\Lecabaret\Services\DataMappers\ProductCollectionMapper;
-use Application\Modules\Prom\Lecabaret\Services\DataMappers\ProductMapper;
-use Application\Modules\Prom\Lecabaret\Services\DataMappers\ShopMapper;
+use Application\Modules\Prom\Nothingshop\Services\DataMappers\CategoryMapper;
+use Application\Modules\Prom\Nothingshop\Services\DataMappers\ProductCollectionMapper;
+use Application\Modules\Prom\Nothingshop\Services\DataMappers\ProductMapper;
+use Application\Modules\Prom\Nothingshop\Services\DataMappers\ShopMapper;
 
 /**
  * Class CatalogueExportService
  *
- * @package Application\Modules\Prom\Lecabaret\Services
+ * @package Application\Modules\Prom\Nothingshop\Services
  */
 class CatalogueExportService {
 
     /**
      * Shop data mapper
      *
-     * @var \Application\Modules\Prom\Lecabaret\Services\DataMappers\ShopMapper $shopMapper
+     * @var \Application\Modules\Prom\Nothingshop\Services\DataMappers\ShopMapper $shopMapper
      */
     private $shopMapper = null;
 
     /**
      * Category data mapper
      *
-     * @var \Application\Modules\Prom\Lecabaret\Services\DataMappers\CategoryMapper $categoryMapper
+     * @var \Application\Modules\Prom\Nothingshop\Services\DataMappers\CategoryMapper $categoryMapper
      */
     private $categoryMapper = null;
 
     /**
      * Product collection data mapper
      *
-     * @var \Application\Modules\Prom\Lecabaret\Services\DataMappers\ProductCollectionMapper $productCollectionMapper
+     * @var \Application\Modules\Prom\Nothingshop\Services\DataMappers\ProductCollectionMapper $productCollectionMapper
      */
     private $productCollectionMapper = null;
 

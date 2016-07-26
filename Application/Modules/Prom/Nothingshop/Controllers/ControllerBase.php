@@ -1,5 +1,5 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Controllers;
+namespace Application\Modules\Prom\Nothingshop\Controllers;
 
 use Application\Services\Db;
 use Application\Services\View;
@@ -8,7 +8,7 @@ use Application\Services\Request;
 /**
  * Class ControllerBase
  *
- * @package Application\Modules\Prom\Lecabaret\Controllers
+ * @package Application\Modules\Prom\Nothingshop\Controllers
  */
 class ControllerBase {
 

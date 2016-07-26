@@ -1,13 +1,13 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Models;
+namespace Application\Modules\Prom\Nothingshop\Models;
 use Application\Aware\Providers\Model;
 
 /**
- * Class ProductDescriptionModel
+ * Class ProductCountryModel
  *
- * @package Application\Modules\Prom\Lecabaret\Models
+ * @package Application\Modules\Prom\Nothingshop\Models
  */
-class ProductDescriptionModel extends Model {
+class ProductCountryModel extends Model {
 
     /**
      * Product id
@@ -17,29 +17,29 @@ class ProductDescriptionModel extends Model {
     private $productId = 0;
 
     /**
-     * Product description
+     * Product country
      *
-     * @var string $description
+     * @var string $country
      */
-    private $description = '';
+    private $country = '';
 
     /**
      * Init
      *
      * @param int $productId
-     * @param string $description
+     * @param string $country
      */
-    public function __construct($productId, $description) {
+    public function __construct($productId, $country) {
 
         $this->setProductId($productId)
-            ->setDescription($description);
+            ->setCountry($country);
     }
 
     /**
      * Validate product id
      *
      * @param int $productId
-     * @return ProductDescriptionModel
+     * @return ProductCountryModel
      */
     public function setProductId($productId) {
 
@@ -48,14 +48,14 @@ class ProductDescriptionModel extends Model {
     }
 
     /**
-     * Validate product description
+     * Validate product country
      *
-     * @param string $description
-     * @return ProductDescriptionModel
+     * @param string country
+     * @return ProductCountryModel
      */
-    public function setDescription($description) {
+    public function setCountry($country) {
 
-        $this->description = trim($description);
+        $this->country = trim($country);
         return $this;
     }
 

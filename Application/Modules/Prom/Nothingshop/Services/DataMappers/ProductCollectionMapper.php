@@ -1,24 +1,24 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Services\DataMappers;
+namespace Application\Modules\Prom\Nothingshop\Services\DataMappers;
 
 /**
  * @connect validate models
  */
 use Application\Aware\Providers\Data;
-use Application\Modules\Prom\Lecabaret\Models\ProductCountryModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductDescriptionModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductKeywordsModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductPhotosModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductPriceModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductPropertiesModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductBrandModel;
-use Application\Modules\Prom\Lecabaret\Models\ProductSizesModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductCountryModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductDescriptionModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductKeywordsModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductPhotosModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductPriceModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductPropertiesModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductBrandModel;
+use Application\Modules\Prom\Nothingshop\Models\ProductSizesModel;
 
 /**
  * Class ProductCollectionMapper
  *
- * @package Application\Modules\Prom\Lecabaret\Services\DataMappers
+ * @package Application\Modules\Prom\Nothingshop\Services\DataMappers
  */
 class ProductCollectionMapper {
 
@@ -39,7 +39,7 @@ class ProductCollectionMapper {
     /**
      * Product data mapper
      *
-     * @var \Application\Modules\Prom\Lecabaret\Services\DataMappers\ProductMapper $productMapper
+     * @var \Application\Modules\Prom\Nothingshop\Services\DataMappers\ProductMapper $productMapper
      */
     private $productMapper = null;
 

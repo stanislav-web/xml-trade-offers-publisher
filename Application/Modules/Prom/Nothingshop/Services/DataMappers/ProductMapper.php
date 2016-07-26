@@ -1,5 +1,5 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Services\DataMappers;
+namespace Application\Modules\Prom\Nothingshop\Services\DataMappers;
 
 use Application\Aware\Providers\Data;
 use Application\Exceptions\DbException;
@@ -9,7 +9,7 @@ use Application\Services\Database;
 /**
  * Class ProductMapper
  *
- * @package Application\Modules\Prom\Lecabaret\Services\DataMappers
+ * @package Application\Modules\Prom\Nothingshop\Services\DataMappers
  */
 class ProductMapper extends Data {
 

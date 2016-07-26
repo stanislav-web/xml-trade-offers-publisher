@@ -1,19 +1,19 @@
 <?php
-namespace Application\Modules\Prom\Lecabaret\Controllers;
+namespace Application\Modules\Prom\Nothingshop\Controllers;
 
-use Application\Modules\Prom\Lecabaret\Services\CatalogueExportService;
+use Application\Modules\Prom\Nothingshop\Services\CatalogueExportService;
 
 /**
  * Class CatalogueController
  *
- * @package Application\Modules\Prom\Lecabaret\Controllers
+ * @package Application\Modules\Prom\Nothingshop\Controllers
  */
 class CatalogueController extends ControllerBase {
 
     /**
      * Catalogue export service
      *
-     * @var \Application\Modules\Prom\Lecabaret\Services\CatalogueExportService $catalogueExportService
+     * @var \Application\Modules\Prom\Nothingshop\Services\CatalogueExportService $catalogueExportService
      */
     private $catalogueExportService;
 

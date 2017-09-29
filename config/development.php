@@ -83,9 +83,9 @@ return [
                 // Database configuration
                 'db' => [
                     'hostname'  =>  'localhost',
-                    'username'  =>  'dev',
-                    'password'  =>  '8QSMovWTaS',
-                    'database'  =>  'CompassCatalogue',
+                    'username'  =>  '',
+                    'password'  =>  '',
+                    'database'  =>  '',
                     'driver'    =>  'mysql',
                     'charset'   =>  'utf8',
                     'debug'     =>  \PDO::ERRMODE_EXCEPTION,
@@ -159,9 +159,9 @@ return [
                 // Database configuration
                 'db' => [
                     'hostname'  =>  'localhost',
-                    'username'  =>  'dev',
-                    'password'  =>  '8QSMovWTaS',
-                    'database'  =>  'CompassCatalogue',
+                    'username'  =>  '',
+                    'password'  =>  '',
+                    'database'  =>  '',
                     'driver'    =>  'mysql',
                     'charset'   =>  'utf8',
                     'debug'     =>  \PDO::ERRMODE_EXCEPTION,
